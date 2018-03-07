@@ -1,5 +1,7 @@
 using QMTK
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+include("Basis.jl")
+include("Lattice.jl")
+include("Samplers.jl")
+include("Space.jl")

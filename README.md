@@ -15,3 +15,7 @@ First, you need to download Julia v0.6. Then type this command in your REPL.
 ## Documents
 
 TO be done.
+
+## Contribute
+
+To contribute this project please open an issue to what you want to implement first. Or you can just pick up existed issue and make a pull request!

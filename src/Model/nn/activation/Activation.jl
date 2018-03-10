@@ -1,7 +1,5 @@
 # TODO: optimize sigmoid and etc. with threshold
 
-grad_abs(x::T) where {T<:Real} = sign(x)
-grad_abs(z::T) where {T<:Complex} = exp(-im * angle(z))
 
 """
     __BASIC_ACTIVATIONS__
@@ -53,5 +51,5 @@ for (OP, func, dfunc) in __BASIC_ACTIVATIONS__
     end
 end
 
-
+include("Complex.jl")
 include("Sigmoid.jl")

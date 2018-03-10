@@ -1,5 +1,3 @@
-# Coarse-grained autodiff for models
-
 export AbstractModel, AbstractBlock
 export forward, backward
 

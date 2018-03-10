@@ -20,4 +20,7 @@ include("Statistics/Statistics.jl")
 # Hamiltonian (depends on Lattice.jl, Basis.jl)
 include("Hamiltonian/Hamiltonian.jl")
 
+# Model
+include("Model/Model.jl")
+
 end # module

@@ -11,7 +11,7 @@ You can use native `Array`, `AbstractSparseArray`, and also
 `StaticArray` for small calculations. Moreover, you can also
 use GPU arrays, like `ArrayFire`, `CuArray` and etc.
 
-NOTE: GPU array is under development.
+NOTE: GPU part is under development.
 
 """
 module nn
@@ -22,7 +22,6 @@ using Compat, StaticArrays, QMTK
 include("linear/Linear.jl")
 
 # activations
-include("activation/Sigmoid.jl")
-include("activation/Sin.jl")
+include("activation/Activation.jl")
 
 end

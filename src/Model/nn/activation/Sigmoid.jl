@@ -1,3 +1,5 @@
+# TODO: use threshold to optimize and avoid infinity
+
 export Sigmoid
 
 """

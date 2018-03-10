@@ -1,11 +1,5 @@
-module Foo
-
-abstract type AbstractFoo end
-
-module Goo
-using Foo
-Foo.AbstractFoo
-
+function df(x::Int)
+    return :(-(sin(x)))
 end
 
-end
+print(eval(df(2)))

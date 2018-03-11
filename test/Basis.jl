@@ -1,5 +1,6 @@
 using QMTK
-using Base.Test
+using Compat.Test
+using Compat
 
 @testset "Check Type Property" begin
 
@@ -38,8 +39,8 @@ end
     @test size(SiteA) == SHAPE
     @test size(SiteA, 1) == SHAPE[1]
     @test size(SiteA, 2) == SHAPE[2]
-    @test indices(SiteA) == indices(SiteA.data)
-    @test indices(SiteA, 1) == indices(SiteA.data, 1)
+    @test Compat.axes(SiteA) == Compat.axes(SiteA.data)
+    @test Compat.axes(SiteA, 1) == Compat.axes(SiteA.data, 1)
     @test eachindex(SiteA) == eachindex(SiteA.data)
     @test stride(SiteA, 1) == stride(SiteA.data, 1)
     @test strides(SiteA) == strides(SiteA.data)

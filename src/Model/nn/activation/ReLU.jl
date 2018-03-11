@@ -4,7 +4,7 @@ struct ReLU{T, O} <: AbstractBlock
 end
 
 ReLU(::Type{T}, ::Type{O}) where {T, O} = ReLU{T, O}()
-ReLU(::Type{T};nbatch=1) where T = ReLU(T, nbatch > 1? Matrix{T} : Vector{T})
+ReLU(::Type{T};nbatch=1) where T = ReLU(T, nbatch > 1 ? Matrix{T} : Vector{T})
 ReLU(;nbatch=1) = ReLU(Float64; nbatch=nbatch)
 
 _relu(x::T) where {T <: Real} = x > 0 ? x : 0

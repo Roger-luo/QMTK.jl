@@ -7,7 +7,7 @@ end
 PReLU(::Type{T}, ::Type{O}, weight::W) where {T, W, O} = PReLU{T, W, O}(weight)
 
 PReLU(::Type{T}, weight::W; nbatch=1) where {T, W} =
-    PReLU(T, nbatch > 1? Matrix{T} : Vector{T}, weight)
+    PReLU(T, nbatch > 1 ? Matrix{T} : Vector{T}, weight)
 PReLU(weight::T;nbatch=1) where T = PReLU(T, weight; nbatch=nbatch)
 PReLU(::Type{T};nbatch=1, init=0.25, nparam=1) where T =
     PReLU(nparam > 1 ? fill(T(init), nparam) : T(init);nbatch=nbatch)

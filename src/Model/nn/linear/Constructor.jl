@@ -1,6 +1,6 @@
 # enable type inference for constructor
 Linear(::Type{T}, ::Type{I}, weight::W, bias::B) where {T, I, W, B} =
-    Linear{T, W, B, I}(weight, bias, zeros(weight), bias === nothing? nothing : zeros(bias))
+    Linear{T, W, B, I}(weight, bias, zeros(weight), bias === nothing ? nothing : zeros(bias))
 
 Linear(weight::WeightType{T}, bias::BiasType{T}; nbatch=1) where {T} =
     Linear(T, linear_input_type(weight, nbatch), weight, bias)
@@ -26,7 +26,7 @@ end
 
 function zerograd!(op::Linear)
     fill!(op.grad_weight, 0)
-    op.grad_bias === nothing ? fill!(op.bias, 0): nothing
+    op.grad_bias === nothing ? fill!(op.bias, 0) : nothing
     return op
 end
 
@@ -44,7 +44,7 @@ end
 
 # Initialization
 function Linear(::Type{T}, in_features::Int, out_features::Int;bias=true, nbatch=1) where T
-    op = Linear(zeros(T, out_features, in_features), bias ? zeros(T, out_features): nothing; nbatch=nbatch)
+    op = Linear(zeros(T, out_features, in_features), bias ? zeros(T, out_features) : nothing; nbatch=nbatch)
     return initialize!(op)
 end
 

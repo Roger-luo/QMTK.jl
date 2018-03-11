@@ -22,7 +22,7 @@ for (OP, FUNC) in __NON_HOLOMOPHICS__
         end
 
         $OP(::Type{T}, ::Type{O}) where {T, O} = $OP{T, O}()
-        $OP(::Type{T};nbatch=1) where T = $OP(T, nbatch > 1? Matrix{T} : Vector{T})
+        $OP(::Type{T};nbatch=1) where T = $OP(T, nbatch > 1 ? Matrix{T} : Vector{T})
         $OP(;nbatch=1) = $OP(Float64, nbatch=nbatch)
 
         function forward(op::$OP{T, O}, input::O) where {T, O}

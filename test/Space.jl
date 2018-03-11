@@ -1,5 +1,5 @@
 using QMTK
-using Base.Test
+using Compat.Test
 
 @testset "Check Real Space" begin
     space = RealSpace()

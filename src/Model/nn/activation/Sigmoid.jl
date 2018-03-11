@@ -12,7 +12,7 @@ end
 Sigmoid(::Type{T}, ::Type{O}) where {T, O} =
     Sigmoid{T, O}()
 
-Sigmoid(::Type{T}; nbatch=1) where T = Sigmoid(T, nbatch > 1? Matrix{T} : Vector{T})
+Sigmoid(::Type{T}; nbatch=1) where T = Sigmoid(T, nbatch > 1 ? Matrix{T} : Vector{T})
 Sigmoid(;nbatch=1) = Sigmoid(Float64; nbatch=nbatch)
 
 function forward(op::Sigmoid{T, O}, input::O) where {T, O}

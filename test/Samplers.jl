@@ -1,5 +1,6 @@
 using QMTK
-using Base.Test
+using Compat.Test
+using Compat.Distributed
 
 @testset "Metropolis-Hasting" begin
 

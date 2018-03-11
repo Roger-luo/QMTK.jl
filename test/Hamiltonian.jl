@@ -1,5 +1,5 @@
 using QMTK
-using Base.Test
+using Compat.Test
 using QMTK.Consts.Pauli
 
 @testset "Hamiltonian Parser" begin

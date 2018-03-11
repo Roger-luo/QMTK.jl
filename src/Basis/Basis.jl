@@ -1,5 +1,3 @@
-import Base: rand!
-
 export AbstractSites, SiteLabel, AbstractBitSite, Spin, Bit, Half
 
 export Sites, SubSites

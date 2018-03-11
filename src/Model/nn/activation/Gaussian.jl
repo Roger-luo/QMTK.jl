@@ -15,7 +15,7 @@ Gaussian(::Type{O}, mu::T, sigma::RT) where {T, RT, O} =
     Gaussian{T, real(T), O}(mu, sigma)
 
 Gaussian(mu::T, sigma::RT; nbatch=1) where {T, RT} =
-    Gaussian(nbatch > 1? Matrix{T} : Vector{T}, mu, sigma)
+    Gaussian(nbatch > 1 ? Matrix{T} : Vector{T}, mu, sigma)
 
 # TODO: check if generated function will be faster (probably not)
 function forward(op::Gaussian{T, RT, O}, input::O) where {T, RT, O}

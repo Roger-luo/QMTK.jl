@@ -1,5 +1,5 @@
 using QMTK
-using Base.Test
+using Compat.Test
 
 include("Basis.jl")
 include("Lattice.jl")

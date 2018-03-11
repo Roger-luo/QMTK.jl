@@ -1,6 +1,7 @@
 __precompile__()
 
 module QMTK
+using Compat
 using Compat.SparseArrays
 using Compat.Random
 

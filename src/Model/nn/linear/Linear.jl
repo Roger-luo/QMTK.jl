@@ -12,9 +12,9 @@ Linear layer.
 
 expression of gradients:
 
-``\delta^{l} = (W^l)^T\delta^{l+1}``
-``\delta^{l}_w = \delta^{l+1}(z^l)^T``
-``\delta^{l}_b = \delta^{l+1}``
+``\\delta^{l} = (W^l)^T\\delta^{l+1}``
+``\\delta^{l}_w = \\delta^{l+1}(z^l)^T``
+``\\delta^{l}_b = \\delta^{l+1}``
 """
 mutable struct Linear{
                         T, # Numeric Type

@@ -72,7 +72,7 @@ end
 # randomize interface
 ####################
 
-import Base:rand, rand!
+import Compat.Random: rand, rand!
 export rand!, rand
 
 function rand!(rng::AbstractRNG, b::Sites{L, T, N}) where {L, T, N}

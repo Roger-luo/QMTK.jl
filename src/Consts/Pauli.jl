@@ -31,8 +31,6 @@ end
 
 const S = PauliVector()
 
-import Base: *, ⋅
-
 *(A::PauliVector, B::PauliVector) = kron(sigmax, sigmax) + kron(sigmay, sigmay) + kron(sigmaz, sigmaz)
 ⋅(A::PauliVector, B::PauliVector) = A * B
 

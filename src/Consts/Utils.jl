@@ -1,5 +1,6 @@
 import JSON
 import Base: dirname, download, parse
+using Compat
 
 ########
 # Utils
@@ -37,10 +38,18 @@ end
 
 function parse(file::DataFile{JSONFormat})
     raw = open(filepath(file), "r") do f
-        readstring(f)
+        Compat.read(f, String)
     end
 
-    return JSON.parse(raw)
+    # work around JSON
+    r = try
+        JSON.parse(raw)
+    catch
+        download(file)
+        parse(file)
+    end
+
+    return r
 end
 
 DATAFILES = Dict{String, DataFile}()

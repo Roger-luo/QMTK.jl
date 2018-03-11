@@ -1,6 +1,8 @@
 __precompile__()
 
 module QMTK
+using Compat.SparseArrays
+using Compat.Random
 
 # NOTE: remember to replace `include` when issue #4600
 # is solved

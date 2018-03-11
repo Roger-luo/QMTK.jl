@@ -9,6 +9,8 @@ this module, there could be conflict.
 """
 module Consts
 
+using Compat
+
 macro __DATA__()
     return joinpath(dirname(dirname(@__DIR__)), "data")
 end

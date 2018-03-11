@@ -6,6 +6,7 @@ Pauli Matrix
 """
 module Pauli
 export sigmax, sigmay, sigmaz, sigmai
+using Compat.SparseArrays
 
 const sigmax = sparse([0 1;1 0])
 const sigmay = sparse([0 -im;im 0])

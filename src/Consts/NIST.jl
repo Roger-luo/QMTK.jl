@@ -13,17 +13,17 @@ value(x::NISTConst) = x.value
 eltype(::Type{NISTConst{F}}) where F = F
 
 function NISTConst(d::Dict{String})
-    value = replace(d["Value"], " ", "")
+    value = Compat.replace(d["Value"], " " => "")
     uncertainty = 0.0
 
     m = match(r"([0-9]+\.[0-9]+)(\.{3})(.*)", value)
     if m != nothing
-        value = parse(m[1] * m[3])
+        value = Meta.parse(m[1] * m[3])
     elseif d["Uncertainty"] == "(exact)"
-        value = parse(value)
+        value = Meta.parse(value)
     else
-        value = parse(value)
-        uncertainty = parse(replace(d["Uncertainty"], " ", ""))
+        value = Meta.parse(value)
+        uncertainty = Meta.parse(replace(d["Uncertainty"], " ", ""))
     end
 
     NISTConst(d["Quantity "], promote(value, uncertainty)..., d["Unit"])

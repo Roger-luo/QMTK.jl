@@ -83,25 +83,25 @@ end
 end
 
 function convert(::Type{SubSites{Half, TA, L}}, x::SubSites{Spin, TB, L}) where {TA, TB, L}
-    return SubSites{Half, TA, L}(x.data./2)
+    return SubSites{Half, TA, L}(x.data ./ 2)
 end
 
 function convert(::Type{SubSites{Half, TA, L}}, x::SubSites{Bit, TB, L}) where {TA, TB, L}
-    return SubSites{Half, TA, L}(x.data.-0.5)
+    return SubSites{Half, TA, L}(x.data .- 0.5)
 end
 
 function convert(::Type{SubSites{Spin, TA, L}}, x::SubSites{Half, TB, L}) where {TA, TB, L}
-    return SubSites{Spin, TA, L}(x.data.*2)
+    return SubSites{Spin, TA, L}(x.data .* 2)
 end
 
 function convert(::Type{SubSites{Spin, TA, L}}, x::SubSites{Bit, TB, L}) where {TA, TB, L}
-    return SubSites{Spin, TA, L}(x.data.*2.-1)
+    return SubSites{Spin, TA, L}(x.data.*2 .- 1)
 end
 
 function convert(::Type{SubSites{Bit, TA, L}}, x::SubSites{Spin, TB, L}) where {TA, TB, L}
-    return SubSites{Bit, TA, L}((x.data.+1)./2)
+    return SubSites{Bit, TA, L}((x.data .+ 1) ./ 2)
 end
 
 function convert(::Type{SubSites{Bit, TA, L}}, x::SubSites{Half, TB, L}) where {TA, TB, L}
-    return SubSites{Bit, TA, L}(x.data.+0.5)
+    return SubSites{Bit, TA, L}(x.data .+ 0.5)
 end

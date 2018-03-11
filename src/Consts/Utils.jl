@@ -1,6 +1,5 @@
 import JSON
 import Base: dirname, download, parse
-using Compat
 
 ########
 # Utils

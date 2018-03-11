@@ -1,10 +1,9 @@
 struct ReLU{T, O} <: AbstractBlock
     input::O
-    ReLU{T, O}() = new{T, O}()
+    ReLU{T, O}() where {T, O} = new{T, O}()
 end
 
 ReLU(::Type{T}, ::Type{O}) where {T, O} = ReLU{T, O}()
-ReLU(::Type{O}) where O = ReLU{Float64, O}()
 ReLU(::Type{T};nbatch=1) where T = ReLU(T, nbatch > 1? Matrix{T} : Vector{T})
 ReLU(;nbatch=1) = ReLU(Float64; nbatch=nbatch)
 

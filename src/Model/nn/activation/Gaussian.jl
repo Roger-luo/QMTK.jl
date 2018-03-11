@@ -1,4 +1,4 @@
-mutable struct Gaussian{T, RT <: real(T), O} <: AbstractBlock
+mutable struct Gaussian{T, RT <: Real, O} <: AbstractBlock
     μ::T
     σ::RT
     grad_μ::T
@@ -7,11 +7,12 @@ mutable struct Gaussian{T, RT <: real(T), O} <: AbstractBlock
     input::O
     output::O
 
-    Gaussian{T, RT, O}(mu, sigma) = new{T, RT, O}(mu, sigma, zero(T), zero(RT))
+    Gaussian{T, RT, O}(mu, sigma) where {T, RT, O} =
+        new{T, RT, O}(mu, sigma, zero(T), zero(RT))
 end
 
-Gaussian(::Type{O}, mu::T, sigma::RT) where {T, RT <: real(T), O} =
-    Gaussian{T, RT, O}(mu, sigma)
+Gaussian(::Type{O}, mu::T, sigma::RT) where {T, RT, O} =
+    Gaussian{T, real(T), O}(mu, sigma)
 
 Gaussian(mu::T, sigma::RT; nbatch=1) where {T, RT} =
     Gaussian(nbatch > 1? Matrix{T} : Vector{T}, mu, sigma)

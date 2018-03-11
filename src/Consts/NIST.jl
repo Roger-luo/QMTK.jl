@@ -23,7 +23,7 @@ function NISTConst(d::Dict{String})
         value = Meta.parse(value)
     else
         value = Meta.parse(value)
-        uncertainty = Meta.parse(replace(d["Uncertainty"], " ", ""))
+        uncertainty = Meta.parse(Compat.replace(d["Uncertainty"], " " => ""))
     end
 
     NISTConst(d["Quantity "], promote(value, uncertainty)..., d["Unit"])

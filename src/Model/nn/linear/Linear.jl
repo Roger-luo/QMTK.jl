@@ -3,6 +3,19 @@ export Linear
 const WeightType{T} = AbstractMatrix{T}
 const BiasType{T} = Union{Compat.Nothing, AbstractVector{T}}
 
+"""
+    Linear{T, WeightType, BiasType, InputType} <: AbstractBlock
+
+Linear layer.
+
+``z^{l+1} = W^l * z^{l} + b^l``
+
+expression of gradients:
+
+``\delta^{l} = (W^l)^T\delta^{l+1}``
+``\delta^{l}_w = \delta^{l+1}(z^l)^T``
+``\delta^{l}_b = \delta^{l+1}``
+"""
 mutable struct Linear{
                         T, # Numeric Type
                         WType<:WeightType{T},

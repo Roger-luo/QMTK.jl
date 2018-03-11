@@ -41,12 +41,8 @@ for (OP, FUNC, DFUNC) in __BASIC_ACTIVATIONS__
             return $(FUNC(:(input)))    
         end
 
-        function backward(op::$OP{T, O}, grad::O) where {T <: Real, O}
+        function backward(op::$OP{T, O}, grad::O) where {T, O}
             grad .* $(DFUNC(:(op.input)))
-        end
-
-        function backward(op::$OP{T, O}, grad::O) where {T <: Complex, O}
-            grad .* conj($(DFUNC(:(op.input))))
         end
     end
 end
@@ -55,3 +51,4 @@ include("Complex.jl")
 include("Sigmoid.jl")
 include("PReLU.jl")
 include("ReLU.jl")
+include("Gaussian.jl")

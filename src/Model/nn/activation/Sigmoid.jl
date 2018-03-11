@@ -23,7 +23,3 @@ end
 function backward(op::Sigmoid{T, O}, grad::O) where {T <: Real, O}
     grad .* (1.0 .- op.output) .* op.output
 end
-
-function backward(op::Sigmoid{T, O}, grad::O) where {T <: Complex, O}
-    grad .* conj((1.0 .- op.output) .* op.output)
-end

@@ -1,5 +1,7 @@
 # QMTK
 
+[![Build Status](https://travis-ci.org/Roger-luo/QMTK.jl.svg?branch=master)](https://travis-ci.org/Roger-luo/QMTK.jl)
+
 Quantum Many-body Toolkit.
 
 A general purpose toolkit for quantum many-body system in Julia language.

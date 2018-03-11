@@ -1,6 +1,7 @@
 # QMTK
 
 [![Build Status](https://travis-ci.org/Roger-luo/QMTK.jl.svg?branch=master)](https://travis-ci.org/Roger-luo/QMTK.jl)
+[![Coverage Status](https://coveralls.io/repos/github/Roger-luo/QMTK.jl/badge.svg?branch=master)](https://coveralls.io/github/Roger-luo/QMTK.jl?branch=master)
 
 Quantum Many-body Toolkit.
 

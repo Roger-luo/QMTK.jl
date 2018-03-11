@@ -18,14 +18,14 @@ end
     space = reset!(space)
     @test israndomized(space) == false
 
-    # should not support roll a unrandomized space
-    @test_throws UnRandomizedError roll!(space)
+    # should not support shake a unrandomized space
+    @test_throws UnRandomizedError shake!(space)
 
-    space = rand!(space)
+    space = randomize!(space)
     @test israndomized(space) == true
 
     old_one = acquire(space)
-    @test typeof(roll!(space)) <: Sites
+    @test typeof(shake!(space)) <: Sites
 
     new_one = acquire(space)
     @test new_one != old_one
@@ -35,7 +35,7 @@ end
 
     space = SiteSpace(Bit, 3, 3, nflips=4)
     old_one = acquire(space)
-    @test typeof(roll!(space)) <: Sites
+    @test typeof(shake!(space)) <: Sites
     new_one = acquire(space)
     @test sum(old_one.!=new_one) == 4
 

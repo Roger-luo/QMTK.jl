@@ -16,7 +16,7 @@ This sample space is initialized. (current sample is a certain default one)
 abstract type Initial <: SpaceState end
 
 # Exceptions
-
+export UnRandomizedError
 import Base: show
 
 """

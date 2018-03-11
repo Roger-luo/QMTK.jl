@@ -3,8 +3,6 @@
 [![Build Status](https://travis-ci.org/Roger-luo/QMTK.jl.svg?branch=master)](https://travis-ci.org/Roger-luo/QMTK.jl)
 [![Coverage Status](https://coveralls.io/repos/github/Roger-luo/QMTK.jl/badge.svg?branch=master)](https://coveralls.io/github/Roger-luo/QMTK.jl?branch=master)
 [![Build status](https://ci.appveyor.com/api/projects/status/ktj2xqpo668pn621?svg=true)](https://ci.appveyor.com/project/Roger-luo/qmtk-jl)
-
-
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Roger-luo.github.io/QMTK.jl/stable)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://Roger-luo.github.io/QMTK.jl/latest)
 

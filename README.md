@@ -5,6 +5,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ktj2xqpo668pn621?svg=true)](https://ci.appveyor.com/project/Roger-luo/qmtk-jl)
 
 
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Roger-luo.github.io/QMTK.jl/stable)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://Roger-luo.github.io/QMTK.jl/latest)
+
 Quantum Many-body Toolkit.
 
 A general purpose toolkit for quantum many-body system in Julia language.

@@ -30,12 +30,10 @@ mutable struct MHSampler{SampleType} <: AbstractSampler
     state::MHState{SampleType}
 end
 
-doc"""
+"""
 This is a temporary function to decide the number of burn itrations.
 
-$$
-20\cdot log(itr)
-$$
+``20\cdot log(itr)``
 
 TODO: find something better
 """

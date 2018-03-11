@@ -1,5 +1,5 @@
 import Base: show
-import Base.Distributed: AbstractWorkerPool
+import Compat.Distributed: AbstractWorkerPool
 
 # abstracts
 export AbstractSampler, SamplerState

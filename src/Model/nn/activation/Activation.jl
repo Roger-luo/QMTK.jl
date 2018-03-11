@@ -53,3 +53,4 @@ end
 
 include("Complex.jl")
 include("Sigmoid.jl")
+include("PReLU.jl")

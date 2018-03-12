@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "QMTK.nn.Linear",
     "category": "type",
-    "text": "Linear{T, WeightType, BiasType, InputType} <: AbstractBlock\n\nLinear layer.\n\nz^l+1 = W^l * z^l + b^l\n\nexpression of gradients:\n\ndelta^l = (W^l)^Tdelta^l+1 delta^l_w = delta^l+1(z^l)^T delta^l_b = delta^l+1\n\n\n\n\n\n"
+    "text": "Linear{T, WeightType, BiasType, InputType} <: AbstractBlock\n\nLinear layer.\n\nz^l+1 = W^l * z^l + b^l\n\nexpression of gradients:\n\ndelta^l = (W^l)^Tdelta^l+1 delta^l_w = delta^l+1(z^l)^T delta^l_b = delta^l+1\n\n\n\n"
 },
 
 {

@@ -14,6 +14,7 @@ SubSites(::Type{L}, data::NTuple{Length, T}) where {L, Length, T} =
     SubSites{L, eltype(L), Length}(data)
 
 sitetype(::Type{SubSites{Label, T, Length}}) where {Label, T, Length} = Label
+data(s::SubSites) = s.data
 
 # Array Interface
 length(b::SubSites) = length(b.data)

@@ -1,13 +1,19 @@
-# QMTK
+# [QMTK Documentation](@id homepage)
 
 Welcome to QMTK (Quantum Many-body Toolkit)
 
-The [QMTK](@ref) library is developed for physics system involves quantum many-body system, including condensed matter physics, quantum computing, quantum information and etc.
+## Manual
 
-In most numerical and theoretical works, programs related to quantum physics and quantum many-body system could have a lot similar functionality, methods, and objects. We aims to provide physicist with a powerful toolkit in Julia language as its frontend interface.
+- [Introduction](@ref man-introduction)
 
+### Basic Types
 
+- [Basis](@ref man-basic-type)
 
-```@docs
-nn.Linear
-```
+### Toolkits
+
+- [Physics Constants](@ref man-constants)
+- [Statistics](@ref man-statistics) (samplers, statistic analysis, etc.)
+- [Hamiltonian](@ref man-hamiltonian)
+- [Lattice](@ref man-lattice) (Chain Lattice, etc.)
+- [Model](@ref man-model) (Tensor Networks, Neural Networks, etc.)

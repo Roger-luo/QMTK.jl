@@ -1,0 +1,1 @@
+# [Lattice](@id man-lattice)

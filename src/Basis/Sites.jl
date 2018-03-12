@@ -1,4 +1,6 @@
 """
+    Sites{L <: SiteLabel, T, N} <: AbstractSites{L, T, N}
+
 Lattice Sites are Julia Arrays with certain Label, it is able to use array
 interface.
 
@@ -11,6 +13,8 @@ end
 Sites(::Type{L}, shape...) where L <: SiteLabel = Sites(L, shape)
 Sites(::Type{L}, shape::Tuple) where L <: SiteLabel =
     Sites{L, eltype(L), length(shape)}(fill(down(L), shape))
+
+data(s::Sites) = s.data
 
 # use array interface
 import Base: eltype, length, ndims, size, eachindex, 

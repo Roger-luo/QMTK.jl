@@ -10,6 +10,8 @@ Quantum Many-body Toolkit.
 
 A general purpose toolkit for quantum many-body system in Julia language.
 
+**Warning** This project is under development, there is no release version at the moment, be careful, there could be bugs. For more information please ref issues.
+
 ## Usage
 
 First, you need to download Julia v0.6. Then type this command in your REPL.

@@ -1,32 +1,49 @@
 # Sites Space
 export SiteSpace
 
+"""
+    SiteSpace{NFlips, S} <: AbstractSpace{Sites, S}
+
+A space of sites contains all possible configurations of the sites.
+`NFlips` indicated how many site will flip according to certain rules
+when `shake!` is called.
+
+    SiteSpace(label, shape; nflips)
+
+constructs a `SiteSpace` with label in type `SiteLabel`, and
+`shape` with an optional keyword `nflips` (default to be 1).
+
+```julia-repl
+julia> SiteSpace(Bit, 2, 2)
+QMTK.SiteSpace{1,QMTK.Randomized}(Int8[1 1; 0 0])
+```
+"""
 mutable struct SiteSpace{NFlips, S} <: AbstractSpace{Sites, S}
     data::Sites
 end
 
 SiteSpace(::Type{L}, shape::Tuple; nflips=1) where {L <: SiteLabel} =
-    SiteSpace{nflips, Random}(rand(L, shape))
+    SiteSpace{nflips, Randomized}(rand(L, shape))
 SiteSpace(::Type{L}, shape...; nflips=1) where {L <: SiteLabel} = 
-    SiteSpace{nflips, Random}(rand(L, shape))
+    SiteSpace{nflips, Randomized}(rand(L, shape))
 SiteSpace(::Type{S}, space::SiteSpace{N}) where {N, S} = SiteSpace{N, S}(space.data)
 
 # Properties
 data(space::SiteSpace) = space.data
 
 # Basics
-function reset!(space::SiteSpace{N, Random}) where N
+function reset!(space::SiteSpace{N, Randomized}) where N
     reset!(space.data)
-    return SiteSpace(Initial, space)
+    return SiteSpace(Initialized, space)
 end
 
 copy(space::SiteSpace{N, S}) where {N, S} = SiteSpace(space.data)
 acquire(space::SiteSpace) = copy(space.data)
 
-# Random methods
-shake!(space::SiteSpace{1, Random}) = randflip!(space.data)
+# Randomized methods
+shake!(space::SiteSpace{1, Randomized}) = randflip!(space.data)
 
-function shake!(space::SiteSpace{N, Random}; MAX_FLIP=1000_000) where N
+function shake!(space::SiteSpace{N, Randomized}; MAX_FLIP=1000_000) where N
     tape = Int[]
     for i = 1:MAX_FLIP
         offset = rand(1:length(space.data))
@@ -45,9 +62,9 @@ function shake!(space::SiteSpace{N, Random}; MAX_FLIP=1000_000) where N
     return space.data
 end
 
-function randomize!(space::SiteSpace{N, Initial}) where N
+function randomize!(space::SiteSpace{N, Initialized}) where N
     rand!(space.data)
-    return SiteSpace(Random, space)
+    return SiteSpace(Randomized, space)
 end
 
 struct SiteTraverser{L <: SiteLabel, T, N} <: AbstractSpaceTraverser

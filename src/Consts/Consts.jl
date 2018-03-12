@@ -1,9 +1,9 @@
 export Consts
 
 """
-Physical Constants.
+    Consts
 
-You can access NIST CODATA Fundamental Physical Constants
+Physical Constants. You can access NIST CODATA Fundamental Physical Constants
 Through this module. Be careful, when using `using` to import
 this module, there could be conflict.
 """

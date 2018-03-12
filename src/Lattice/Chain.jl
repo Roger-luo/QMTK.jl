@@ -1,6 +1,20 @@
 export Chain
 
 """
+    Chain{B} <: BCLattice{B, 1}
+
+general chain lattice with boundary condition `B`.
+
+    Chain([Boundary], length)
+
+Construct a chain lattice with boundary (optional,
+default to be `Fixed`)
+
+```julia-repl
+julia> Chain(10)
+QMTK.Chain{QMTK.Fixed}(10)
+
+```
 """
 struct Chain{B<:Boundary} <: BCLattice{B, 1}
     length::Int

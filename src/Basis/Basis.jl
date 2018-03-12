@@ -67,7 +67,7 @@ function down end
 
 get data of the basis
 """
-function data end
+function data(site::AbstractSites) end
 
 # define element type for each type of site
 import Base: eltype

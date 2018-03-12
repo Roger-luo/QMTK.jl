@@ -4,6 +4,19 @@ export RealSpace
 
 const RealSpaceType{T} = Union{T, Array{T, N} where N}
 
+"""
+    RealSpace{T, DType, S} <: AbstractSpace{T, S}
+
+A real space contains element of type `DType` (e.g Array or a Number), the
+numeric content of each element has type `T` (`eltype(DType) = T`)
+
+A naive example is the 1-D real space
+
+```julia-repl
+julia> RealSpace(min=-1, max=1)
+QMTK.RealSpace{Float64,Float64,QMTK.Randomized}(-1.0, 1.0, -0.04293376352914002)
+```
+"""
 mutable struct RealSpace{T<:Real, DType<:RealSpaceType{T}, S} <: AbstractSpace{T, S}
     min::T
     max::T
@@ -22,20 +35,20 @@ RealSpace(shape::Integer...; min=0, max=1) = RealSpace(Float64, shape, min=min, 
 RealSpace(::Type{T}, shape::Integer...; min=0, max=1) where T = RealSpace(T, shape, min=min, max=max)
 
 # Basic Constructors
-RealSpace(::Type{T}; min=0, max=1) where T = RealSpace{T, T, Random}(min, max, _uniform(T, min, max))
+RealSpace(::Type{T}; min=0, max=1) where T = RealSpace{T, T, Randomized}(min, max, _uniform(T, min, max))
 RealSpace(::Type{T}, shape::Tuple; min=0, max=1) where T =
-    RealSpace{T, Array{T, length(shape)}, Random}(min, max, _uniform(T, shape, min, max))
+    RealSpace{T, Array{T, length(shape)}, Randomized}(min, max, _uniform(T, shape, min, max))
 
 RealSpace(::Type{S}, space::RealSpace{T, D}) where {T, D, S} = RealSpace{T, D, S}(space.min, space.max, space.data)
 
-function reset!(space::RealSpace{T, D, Random}) where {T, D <: AbstractArray}
+function reset!(space::RealSpace{T, D, Randomized}) where {T, D <: AbstractArray}
     fill!(space.data, space.min)
-    return RealSpace(Initial, space)
+    return RealSpace(Initialized, space)
 end
 
-function reset!(space::RealSpace{T, D, Random}) where {T, D <: Real}
+function reset!(space::RealSpace{T, D, Randomized}) where {T, D <: Real}
     space.data = space.min
-    return RealSpace(Initial, space)
+    return RealSpace(Initialized, space)
 end
 
 copy(space::RealSpace{T, D, S}) where {T, D <: Real, S} =
@@ -77,9 +90,9 @@ end
     return space.data
 end
 
-shake!(space::RealSpace{T, D, Random}) where {T, D} = _shake!(space)
+shake!(space::RealSpace{T, D, Randomized}) where {T, D} = _shake!(space)
 
-function randomize!(space::RealSpace{T, D, Initial}) where {T, D}
+function randomize!(space::RealSpace{T, D, Initialized}) where {T, D}
     _shake!(space)
-    return RealSpace(Random, space)
+    return RealSpace(Randomized, space)
 end

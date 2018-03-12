@@ -1,4 +1,6 @@
 """
+    SubSites{Label, T, Length} <: AbstractSites{Label, T, 1}
+
 Sub-sites is usually derived from `Sites`. It contains several sites in
 a tuple for local operations.
 

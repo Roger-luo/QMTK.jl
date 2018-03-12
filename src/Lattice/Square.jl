@@ -1,6 +1,14 @@
 export Square
 
 """
+    Square{B} <: BCLattice{B, 2}
+
+General square lattice with boundary condition `B`.
+
+    Square([Boundary], width, height)
+    Square([Boundary], shape)
+
+Construct a square lattice
 """
 struct Square{B<:Boundary} <: BCLattice{B, 2}
     width::Int

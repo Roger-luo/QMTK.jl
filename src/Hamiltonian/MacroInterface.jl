@@ -1,3 +1,4 @@
+using QMTK.Consts.Pauli
 export @ham
 
 __REGION__ = Dict(

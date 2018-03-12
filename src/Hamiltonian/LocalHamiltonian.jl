@@ -89,11 +89,10 @@ RegionIterator(
 # TODO: optimization for Region{0} -> result can actually be inferred directly
 # complexity should be reduced.
 
-start(itr::RegionIterator) = (start(itr.lattice), nothing, nothing, true)
+start(itr::RegionIterator) = (start(itr.lattice), nothing, nothing, nothing, nothing, true)
 
 function next(itr::RegionIterator, state)
-    lattice_state, local_itr, local_state, isdone = state
-
+    lattice_state, i, j, local_itr, local_state, isdone = state
     if isdone
         (i, j), lattice_state = next(itr.lattice, lattice_state)
         local_itr = itr.hamiltonian(itr.sites[i...], itr.sites[j...])
@@ -104,10 +103,10 @@ function next(itr::RegionIterator, state)
     (val, (Si, Sj)), local_state = next(local_itr, local_state)
     rhs = copy(itr.sites)
     rhs[i...] = Si; rhs[j...] = Sj;
-    return (val, rhs), (lattice_state, local_itr, local_state, done(local_itr, local_state))
+    return (val, rhs), (lattice_state, i, j, local_itr, local_state, done(local_itr, local_state))
 end
 
 function done(itr::RegionIterator, state)
-    lattice_state, local_itr, local_state, isdone = state
+    lattice_state, i, j, local_itr, local_state, isdone = state
     return done(itr.lattice, lattice_state) && isdone
 end

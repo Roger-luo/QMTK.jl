@@ -21,7 +21,7 @@ collect!(dataset::AbstractArray{ST}, state::MHState{ST}) where {ST} =
 a proposal distribution for sample type `ST`
 """
 mutable struct MHSampler{SampleType} <: AbstractSampler
-    space::AbstractSpace{SampleType, Random}
+    space::AbstractSpace{SampleType, Randomized}
 
     itr::Int
     burn::Int
@@ -39,7 +39,7 @@ TODO: find something better
 """
 _empirical_burn_itr(itr) = 20 * (itr|>log|>floor|>Int)
 
-function MHSampler(space::AbstractSpace{ST, Random}; itr=1000, burn=300, thin=1) where {ST}
+function MHSampler(space::AbstractSpace{ST, Randomized}; itr=1000, burn=300, thin=1) where {ST}
     @assert itr > burn "too many burn-in samples"
     return MHSampler{ST}(space, itr, burn, thin, MHState(space))
 end

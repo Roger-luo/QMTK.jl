@@ -10,7 +10,9 @@ mutable struct Sites{L <: SiteLabel, T, N} <: AbstractSites{L, T, N}
     data::Array{T, N}
 end
 
-Sites(::Type{L}, shape...) where L <: SiteLabel = Sites(L, shape)
+Sites(::Type{L}, data::Array{T, N}) where {L, T, N} = Sites{L, T, N}(data)
+
+Sites(::Type{L}, shape::Int...) where L <: SiteLabel = Sites(L, shape)
 Sites(::Type{L}, shape::Tuple) where L <: SiteLabel =
     Sites{L, eltype(L), length(shape)}(fill(down(L), shape))
 

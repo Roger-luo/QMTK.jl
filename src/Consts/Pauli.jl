@@ -24,14 +24,34 @@ const σ = [sigmai, sigmax, sigmay, sigmaz]
 
 # Pauli Vec
 
-export PauliVector, S
+export PauliVector, S, *, ⋅
 
+"""
+    PauliVector
+
+PauliVector ``(\sigma_x, \sigma_y, \sigma_z)``
+"""
 struct PauliVector
 end
 
 const S = PauliVector()
 
+import Base: *
 *(A::PauliVector, B::PauliVector) = kron(sigmax, sigmax) + kron(sigmay, sigmay) + kron(sigmaz, sigmaz)
 ⋅(A::PauliVector, B::PauliVector) = A * B
+
+import Base: getindex
+
+function getindex(pv::PauliVector, index::Integer)
+    if index == 1
+        return sigmax
+    elseif index == 2
+        return sigmay
+    elseif index == 3
+        return sigmaz
+    else
+        throw(BoundsError(pv, index))
+    end
+end
 
 end

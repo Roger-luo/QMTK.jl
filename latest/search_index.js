@@ -1,7 +1,7 @@
 var documenterSearchIndex = {"docs": [
 
 {
-    "location": "index.html#",
+    "location": "#",
     "page": "Home",
     "title": "Home",
     "category": "page",
@@ -9,7 +9,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#QMTK.nn.Linear",
+    "location": "#QMTK.nn.Linear",
     "page": "Home",
     "title": "QMTK.nn.Linear",
     "category": "type",
@@ -17,7 +17,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#QMTK-1",
+    "location": "#QMTK-1",
     "page": "Home",
     "title": "QMTK",
     "category": "section",
@@ -25,7 +25,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "man/Introduction.html#",
+    "location": "man/Introduction/#",
     "page": "Introduction",
     "title": "Introduction",
     "category": "page",
@@ -33,7 +33,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "man/Introduction.html#Introduction-1",
+    "location": "man/Introduction/#Introduction-1",
     "page": "Introduction",
     "title": "Introduction",
     "category": "section",

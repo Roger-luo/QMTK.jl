@@ -9,7 +9,9 @@ makedocs(
         "Manual" => [
             "Introduction" => "man/Introduction.md",
         ]
-    ]
+    ],
+    html_prettyurls = !("local" in ARGS),
+    html_canonical = "https://rogerluo.me/QMTK.jl/latest/",
 )
 
 deploydocs(

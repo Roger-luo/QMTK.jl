@@ -50,28 +50,38 @@ struct SamplePlan{S<:AbstractSampler, D}
 end
 
 """
+    state(plan)
+
 get sampler's state in `SamplePlan`
 """
 state(plan::SamplePlan) = state(plan.sampler)
 
 
 """
+    update!(plan)
+
 update plan accroding to certain sampler
 """
 function update!(plan::SamplePlan) end
 
 """
+    sample!(plan) -> data
+
 execute your sample plan
 """
 function sample!(plan::SamplePlan) end
 
 """
+    sample!(pool, plan; nchain=4) -> data
+
 execute your sample plan according to a `WorkPool`
 """
 sample!(pool::AbstractWorkerPool, plan::SamplePlan; nchain=4) =
     pmap(pool, x->sample!(plan), 1:nchain)
 
 """
+    sample!(nchain, plan) -> data
+
 execute your sample plan in parallel, with `n` chains.
 """
 sample!(nchain::Int, plan::SamplePlan) = 
@@ -93,6 +103,8 @@ end
 ### sugars
 
 """
+    sample(expr)
+
 a sugar macro to construct a `SamplePlan`
 """
 macro sample(expr)

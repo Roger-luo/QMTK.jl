@@ -17,8 +17,18 @@ collect!(dataset::AbstractArray{ST}, state::MHState{ST}) where {ST} =
     collect!(dataset, state.curr)
 
 """
+    MHSampler{SampleType} <: AbstractSampler
+
 `MHSampler` uses Metropolis-Hasting algorithm to sample
 a proposal distribution for sample type `ST`
+
+    MHSampler(space; itr=1000, burn=300, thin=1)
+
+Construct a MH sampler 
+
+- `itr`: number of iterations
+- `burn`: number of burned iterations
+- `thin`: number of jumps after each measure
 """
 mutable struct MHSampler{SampleType} <: AbstractSampler
     space::AbstractSpace{SampleType, Randomized}

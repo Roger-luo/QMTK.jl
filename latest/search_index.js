@@ -705,11 +705,83 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "man/statistics/#QMTK.AbstractSampler",
+    "page": "Statistics",
+    "title": "QMTK.AbstractSampler",
+    "category": "type",
+    "text": "Abstract type for all samplers\n\nInterface\n\nshow(io::IO, sampler): print verbose information for a sampler\nalgorithm(sampler) -> String: print algorithm name\nstate(sampler) -> SamplerState: get sampler state\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.SamplerState",
+    "page": "Statistics",
+    "title": "QMTK.SamplerState",
+    "category": "type",
+    "text": "Abstract type for all sampler state\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.SamplePlan",
+    "page": "Statistics",
+    "title": "QMTK.SamplePlan",
+    "category": "type",
+    "text": "Sample Plan contains a distribution and a sampler.\n\nInterface\n\nstate(plan::SamplePlan) -> SamplerState: get sampler\'s state\nupdate!(plan::SamplePlan) -> SamplePlan: update sample plan according to the sampler\nshow(plan::SamplePlan): print verbose information\n\nNote\n\nusing a list of distribution (probability) is also allowed. This means you have to define your list type as a subtype of AbstractVector and it has to support getindex method at least.\n\nusing a Function as your distribution is more common. And you can define your custom type of distribution function by define a subtype of Function with its call method (AKA function (f::YourFunctionType)(x)).\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.state-Tuple{QMTK.SamplePlan}",
+    "page": "Statistics",
+    "title": "QMTK.state",
+    "category": "method",
+    "text": "state(plan)\n\nget sampler\'s state in SamplePlan\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.update!-Tuple{QMTK.SamplePlan}",
+    "page": "Statistics",
+    "title": "QMTK.update!",
+    "category": "method",
+    "text": "update!(plan)\n\nupdate plan accroding to certain sampler\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.sample!-Tuple{QMTK.SamplePlan}",
+    "page": "Statistics",
+    "title": "QMTK.sample!",
+    "category": "method",
+    "text": "sample!(plan) -> data\n\nexecute your sample plan\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.sample!-Tuple{Base.Distributed.AbstractWorkerPool,QMTK.SamplePlan}",
+    "page": "Statistics",
+    "title": "QMTK.sample!",
+    "category": "method",
+    "text": "sample!(pool, plan; nchain=4) -> data\n\nexecute your sample plan according to a WorkPool\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.sample!-Tuple{Int64,QMTK.SamplePlan}",
+    "page": "Statistics",
+    "title": "QMTK.sample!",
+    "category": "method",
+    "text": "sample!(nchain, plan) -> data\n\nexecute your sample plan in parallel, with n chains.\n\n\n\n"
+},
+
+{
+    "location": "man/statistics/#QMTK.MHSampler",
+    "page": "Statistics",
+    "title": "QMTK.MHSampler",
+    "category": "type",
+    "text": "MHSampler{SampleType} <: AbstractSampler\n\nMHSampler uses Metropolis-Hasting algorithm to sample a proposal distribution for sample type ST\n\nMHSampler(space; itr=1000, burn=300, thin=1)\n\nConstruct a MH sampler \n\nitr: number of iterations\nburn: number of burned iterations\nthin: number of jumps after each measure\n\n\n\n"
+},
+
+{
     "location": "man/statistics/#Sampler-1",
     "page": "Statistics",
     "title": "Sampler",
     "category": "section",
-    "text": ""
+    "text": "Samplers are certain type contains a sample space of AbstractSpace and some other parameters (like the number of iterations and etc.). For a given sampler on certain space, you can specify the sampling task by make a SamplePlan. A sample plan is a type contains the desired distribution and the sampler. To execute a SamplePlan, just simply use sample!, or you could call update! to run only one iteration.A possible example could bespace = RealSpace(min=-4, max=4)\nsampler = MHSampler(space)\n\n@everywhere function normal(x::T) where T <: Real\n    factor = 1 / sqrt(2 * pi)\n    return factor * exp(- x^2/2)\nend\n\nplan = SamplePlan(normal, sampler)\ndata = sample!(plan)\n# run parallel\n# data = sample!(4, plan)\n# or run with customed workerpool\n# data = sample!(pool, plan)the macro @everywhere here is used to declare this function on different process, you won\'t need it if there is only one process.AbstractSampler\nSamplerState\nSamplePlan\nstate(plan::SamplePlan)\nupdate!(plan::SamplePlan)\nsample!(plan::SamplePlan)\nsample!(pool::Distributed.AbstractWorkerPool, plan::SamplePlan; nchain=4)\nsample!(nchain::Int, plan::SamplePlan)\nMHSampler"
 },
 
 {
@@ -724,6 +796,14 @@ var documenterSearchIndex = {"docs": [
     "location": "man/model/#man-model-1",
     "page": "Model",
     "title": "Model",
+    "category": "section",
+    "text": "Our models are subtypes of AbstractModel.TO BE DONE."
+},
+
+{
+    "location": "man/model/#Neural-Network-1",
+    "page": "Model",
+    "title": "Neural Network",
     "category": "section",
     "text": ""
 },

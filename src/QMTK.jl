@@ -5,6 +5,12 @@ using Compat
 using Compat.SparseArrays
 using Compat.Random
 
+"""
+    __version__
+
+QMTK version number
+"""
+const __version__ = v"0.1.0"
 # NOTE: remember to replace `include` when issue #4600
 # is solved
 

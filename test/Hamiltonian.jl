@@ -17,4 +17,4 @@ precise = kronprod(sigmax, sigmax, sigmai, sigmai) + kronprod(sigmai, sigmax, si
 
 @test m == precise
 
-end
+end # parser test

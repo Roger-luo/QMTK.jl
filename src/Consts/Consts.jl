@@ -13,7 +13,7 @@ using Compat
 export DATA
 
 macro __DATA__()
-    joinpath(dirname(@__DIR__), "data")
+    joinpath(dirname(dirname(@__DIR__)), "data")
 end
 
 mkpath(@__DATA__)

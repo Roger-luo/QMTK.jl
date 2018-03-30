@@ -17,14 +17,11 @@ const __version__ = v"0.1.0"
 # orthogonal part
 include("Consts/Consts.jl")
 include("Utils.jl")
-include("Basis/Basis.jl")
+include("Base/Base.jl")
 include("Lattice/Lattice.jl")
 
-# Depends on Basis.jl
-include("Space/Space.jl")
-
 # MCMC part (depends on Basis.jl, Space.jl)
-include("Statistics/Statistics.jl")
+include("Sample/Sample.jl")
 
 # Hamiltonian (depends on Lattice.jl, Basis.jl)
 include("Hamiltonian/Hamiltonian.jl")

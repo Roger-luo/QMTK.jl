@@ -110,5 +110,3 @@ a sugar macro to construct a `SamplePlan`
 macro sample(expr)
     warn("Not Implemented")
 end
-
-include("metropolis.jl")

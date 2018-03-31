@@ -26,6 +26,8 @@ Square(::Type{B}, shape::Tuple{Int, Int}) where {B <: Boundary} =
 shape(square::Square) = (square.height, square.width)
 length(square::Square) = square.height * square.width
 sites(square::Square) = SquareSiteIter(square)
+
+# TODO: add bounds check, throw LoadError when bond is invalid
 bonds(square::Square, bond::Integer) = SquareBondIter(square, bond)
 
 struct SquareSiteIter <: SiteIterator{Square}
@@ -66,21 +68,21 @@ end
 
 import Base: start, next, done, eltype, length, size, iteratorsize, HasShape
 
-start(itr::SquareSiteIter) = (1, 1)
+start(itr::SquareSiteIter) = (1, 1, 1)
 
-function next(itr::SquareSiteIter, state::Tuple{Int, Int})
-    i, j = state
+function next(itr::SquareSiteIter, state)
+    i, j, count = state
 
-    if i > itr.height - 1
-        return (i, j), (1, j+1)
+    if i > itr.height
+        return (1, j+1), (2, j+1, count+1)
     end
-    return (i, j), (i+1, j)
+    return (i, j), (i+1, j, count+1)
 end
 
-done(itr::SquareSiteIter, state::Tuple{Int, Int}) = state[2] > itr.width
+done(itr::SquareSiteIter, state) = state[3] > length(itr)
 
 length(itr::SquareSiteIter) = itr.width * itr.height
-size(itr::SquareSiteIter) = (itr.height. itr.width)
+size(itr::SquareSiteIter) = (itr.height, itr.width)
 eltype(itr::SquareSiteIter) = Tuple{Int, Int}
 iteratorsize(itr::SquareSiteIter) = HasShape()
 
@@ -144,7 +146,7 @@ end
 function next(itr::SquareBondIter{Fixed, UpLeft{K}}, state) where K
     i, j, count = state
     if i+K > itr.height
-        return ((1, j+1), (1+K, j+K+1)), (2, j+1, count+1)
+        return ((1+K, j+1), (1, j+K+1)), (2, j+1, count+1)
     end
     return ((i+K, j), (i, j+K)), (i+1, j, count+1)
 end
@@ -153,8 +155,8 @@ end
 # Periodic Boundary
 ####################
 
-length(itr::SquareBondIter{Periodic}) where K = itr.height * itr.width
-size(itr::SquareBondIter{Periodic, Vertical{K}}) where K = (itr.height, itr.width)
+length(itr::SquareBondIter{Periodic}) = itr.height * itr.width
+size(itr::SquareBondIter{Periodic}) = (itr.height, itr.width)
 
 function next(itr::SquareBondIter{Periodic, Vertical{K}}, state) where K
     i, j, count = state
@@ -168,23 +170,23 @@ end
 function next(itr::SquareBondIter{Periodic, Horizontal{K}}, state) where K
     i, j, count = state
     if i > itr.height
-        return ((1, j+1), (1, (j+K)%itr.height+1)), (2, j+1, count+1)
+        return ((1, j+1), (1, (j+K)%itr.width+1)), (2, j+1, count+1)
     end
-    return ((i, j), (i, (j+K-1)%itr.height+1)), (i+1, j, count+1)
+    return ((i, j), (i, (j+K-1)%itr.width+1)), (i+1, j, count+1)
 end
 
-function next(itr::SquareBondIter{Fixed, UpRight{K}}, state) where K
+function next(itr::SquareBondIter{Periodic, UpRight{K}}, state) where K
     i, j, count = state
-    if i+K > itr.height
+    if i > itr.height
         return ((1, j+1), (K%itr.height+1, (j+K)%itr.width+1)), (2, j+1, count+1)
     end
     return ((i, j), ((i+K-1)%itr.height+1, (j+K-1)%itr.width+1)), (i+1, j, count+1)
 end
 
-function next(itr::SquareBondIter{Fixed, UpLeft{K}}, state) where K
+function next(itr::SquareBondIter{Periodic, UpLeft{K}}, state) where K
     i, j, count = state
-    if i+K > itr.height
-        return ((1, j+1), (K%itr.height+1, (j+K)%itr.width+1)), (2, j+1, count+1)
+    if i > itr.height
+        return ((K%itr.height+1, j+1), (1, (j+K)%itr.width+1)), (2, j+1, count+1)
     end
     return (((i+K-1)%itr.height+1, j), (i, (j+K-1)%itr.width+1)), (i+1, j, count+1)
 end

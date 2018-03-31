@@ -41,3 +41,22 @@ abstract type Vertical{N} <: LatticeIterTag end
 abstract type Horizontal{N} <: LatticeIterTag end
 abstract type UpRight{N} <: LatticeIterTag end
 abstract type UpLeft{N} <: LatticeIterTag end
+
+
+export AbstractRegion, Region
+# Regions
+
+"""
+    AbstractRegion
+
+abstract region.
+"""
+abstract type AbstractRegion end
+
+"""
+    Region{ID} <: AbstractRegion
+
+denotes the `ID`th Region.
+"""
+abstract type Region{ID} <: AbstractRegion end
+

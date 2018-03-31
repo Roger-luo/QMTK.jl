@@ -1,0 +1,2 @@
+abstract type AbstractHamiltonian end
+abstract type AbstractHamiltonianIterator end

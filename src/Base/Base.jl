@@ -1,5 +1,5 @@
 # Labels
-include("Labels.jl")
+include("Tags/Tags.jl")
 
 # Ket
 include("Ket.jl")
@@ -10,6 +10,4 @@ include("Sites.jl")
 include("SubSites.jl")
 
 # Space
-include("Space.jl")
-include("RealSpace.jl")
-include("SiteSpace.jl")
+include("Space/Space.jl")

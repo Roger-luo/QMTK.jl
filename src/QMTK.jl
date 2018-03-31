@@ -18,9 +18,9 @@ const __version__ = v"0.1.0"
 include("Consts/Consts.jl")
 include("Utils.jl")
 include("Base/Base.jl")
-include("Lattice/Lattice.jl")
 
-# MCMC part (depends on Basis.jl, Space.jl)
+# Depends on Base.jl
+include("Lattice/Lattice.jl")
 include("Sample/Sample.jl")
 
 # Hamiltonian (depends on Lattice.jl, Basis.jl)

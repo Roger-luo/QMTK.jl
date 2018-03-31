@@ -5,50 +5,54 @@ export Square
 
 General square lattice with boundary condition `B`.
 
-    Square([Boundary], width, height)
+    Square([Boundary], height, width)
     Square([Boundary], shape)
 
-Construct a square lattice
+Construct a square lattice. The shape follows the order of Julia's
+Native Array.
 """
-struct Square{B<:Boundary} <: BCLattice{B, 2}
-    width::Int
+struct Square{B <: Boundary} <: BCLattice{B, 2}
     height::Int
+    width::Int
 end
 
-Square(width::Integer, height::Integer) = Square{Fixed}(width, height)
-Square(::Type{B}, width::Integer, height::Integer) where {B<:Boundary} = 
-    Square{B}(width, height)
+Square(height::Integer, width::Integer) = Square{Fixed}(height, width)
+Square(::Type{B}, height::Integer, width::Integer) where {B <: Boundary} =
+    Square{B}(height, width)
 Square(shape::Tuple{Int, Int}) = Square(Fixed, shape)
-Square(::Type{B}, shape::Tuple{Int, Int}) where {B<:Boundary} =
+Square(::Type{B}, shape::Tuple{Int, Int}) where {B <: Boundary} =
     Square{B}(shape...)
 
-shape(square::Square) = (square.width, square.height)
-length(square::Square) = square.width * square.height
+shape(square::Square) = (square.height, square.width)
+length(square::Square) = square.height * square.width
 sites(square::Square) = SquareSiteIter(square)
 bonds(square::Square, bond::Integer) = SquareBondIter(square, bond)
 
 struct SquareSiteIter <: SiteIterator{Square}
-    width::Int
     height::Int
+    width::Int
 end
 
-SquareSiteIter(square::Square) = SquareSiteIter(square.width, square.height)
+SquareSiteIter(square::Square) = SquareSiteIter(square.height, square.width)
 
 struct SquareBondIter{B<:Boundary, K} <: BondIterator{Square{B}}
-    width::Int
     height::Int
+    width::Int
 end
+
+SquareBondIter(square::Square{B}, ::Type{K}) where {B, K} =
+    SquareBondIter{B, K}(square.height, square.width)
 
 abstract type Odd{K} end
 abstract type Even{K} end
 
-function SquareBondIter(square::Square{B}, bond::Int) where {B<:Boundary}
+function SquareBondIter(square::Square{B}, bond::Int) where B
     if bond % 2 == 0
-        k = Int(bond/2)
-        return SquareBondIter{B, Even{k}}(square.width, square.height)
+        k = Int(bond / 2)
+        return SquareBondIter(square, Even{k})
     else
         k = floor(Int, (bond + 1) / 2)
-        return SquareBondIter{B, Odd{k}}(square.width, square.height)
+        return SquareBondIter(square, Odd{k})
     end
 end
 
@@ -63,17 +67,21 @@ start(itr::SquareSiteIter) = (1, 1)
 function next(itr::SquareSiteIter, state::Tuple{Int, Int})
     i, j = state
 
-    if j > itr.height - 1
-        return (i, j), (i+1, 1)
+    if i > itr.height - 1
+        return (i, j), (1, j+1)
     end
-
-    return (i, j), (i, j+1)
+    return (i, j), (i+1, j)
 end
 
-done(itr::SquareSiteIter, state::Tuple{Int, Int}) = state[1] > itr.width
+done(itr::SquareSiteIter, state::Tuple{Int, Int}) = state[2] > itr.width
 
 length(itr::SquareSiteIter) = itr.width * itr.height
 eltype(itr::SquareSiteIter) = Tuple{Int, Int}
+
+######################
+# Bonds
+######################
+
 
 start(itr::SquareBondIter) = (1, 1, 1)
 eltype(itr::SquareBondIter) = NTuple{2, NTuple{2, Int}}
@@ -83,156 +91,44 @@ function done(itr::SquareBondIter, state::NTuple{3, Int})
     return count > length(itr)
 end
 
-#################
+##################
 # Fixed Boundary
-#################
+##################
 
 function length(itr::SquareBondIter{Fixed, Odd{K}}) where K
-    return itr.height * (itr.width - K) + itr.width * (itr.height - K)
+    (itr.height - K) * itr.width + itr.height * (itr.width - K)    
 end
 
 function next(itr::SquareBondIter{Fixed, Odd{K}}, state::NTuple{3, Int}) where K
     i, j, count = state
-    
-    if count < (itr.width - K) * itr.height + 1
-        return _horizontal(itr, state)
-    elseif count == (itr.width - K) * itr.height + 1
-        return _vertical(itr, (1, 1, count))
+
+    if count < (itr.height - K) * itr.width + 1
+        return next_vertical(itr, state)
+    elseif count == (itr.height - K) * itr.width + 1
+        return next_horizontal(itr, (1, 1, count))
     else
-        return _vertical(itr, state)
+        return next_horizontal(itr, state)
     end
 end
 
-@inline function _vertical(itr::SquareBondIter{Fixed, Odd{K}}, state::NTuple{3, Int}) where K
+@inline function next_horizontal(itr::SquareBondIter{Fixed, Odd{K}}, state::NTuple{3, Int}) where K    
     i, j, count = state
 
-    if i > itr.width
-        return ((1, j+1), (1, j+K+1)), (2, j+1, count+1)
-    else
-        return ((i, j), (i, j+K)), (i+1, j, count+1)
+    if j + K > itr.width
+        return ((i+1, 1), (i+1, 1+K)), (i+1, 2, count+1)
     end
+
+    return ((i, j), (i, j+K)), (i, j+1, count+1)
 end
 
-@inline function _horizontal(itr::SquareBondIter{Fixed, Odd{K}}, state::NTuple{3, Int}) where K
+@inline function next_vertical(itr::SquareBondIter{Fixed, Odd{K}}, state::NTuple{3, Int}) where K    
     i, j, count = state
 
-    if j > itr.height
-        return ((i+1, 1), (i+K+1, 1)), (i+1, 2, count+1)
-    else
-        return ((i, j), (i + K, j)), (i, j+1, count+1)
+    if i + K > itr.height
+        return ((1, j+1), (1+K, j+1)), (2, j+1, count+1)
     end
+
+    return ((i, j), (i+K, j)), (i+1, j, count+1)
 end
 
-#######
-# Even
-#######
 
-function length(itr::SquareBondIter{Fixed, Even{K}}) where K
-    return 2 * (itr.width - K) * (itr.height - K)
-end
-
-function next(itr::SquareBondIter{Fixed, Even{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-
-    if count < (itr.width - K) * (itr.height - K) + 1
-        return _upper_right(itr, state)
-    elseif count == (itr.width - K) * (itr.height - K) + 1
-        return _upper_left(itr, (1, 1, count))
-    else
-        return _upper_left(itr, state)
-    end
-end
-
-function _upper_left(itr::SquareBondIter{Fixed, Even{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-    
-    if i > itr.width - K
-        return ((K+1, j+1), (1, j+K+1)), (2, j+1, count+1)
-    end
-    return ((i+K, j), (i, j+K)), (i+1, j, count+1)
-end
-
-function _upper_right(itr::SquareBondIter{Fixed, Even{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-
-    if j > itr.height - K
-        return ((i+1, 1), (i+K+1, 1+K)), (i+1, 2, count+1)
-    end
-    return ((i, j), (i+K, j+K)), (i, j+1, count+1)
-end
-
-####################
-# Periodic Boundary
-####################
-
-length(itr::SquareBondIter{Periodic, K}) where K = 2 * itr.width * itr.height
-
-######
-# Odd
-######
-
-function next(itr::SquareBondIter{Periodic, Odd{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-
-    if count < itr.width * itr.height + 1
-        return _horizontal(itr, state)
-    elseif count == itr.width * itr.height + 1
-        return _vertical(itr, (1, 1, count))
-    else
-        return _vertical(itr, state)
-    end
-end
-
-function _horizontal(itr::SquareBondIter{Periodic, Odd{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-
-    if j > itr.height
-        return ((i+1, 1), ((i+K)%itr.width+1, 1)), (i+1, 2, count+1)
-    else
-        return ((i, j), ((i+K-1)%itr.width+1, j)), (i, j+1, count+1)
-    end
-end
-
-function _vertical(itr::SquareBondIter{Periodic, Odd{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-
-    if i > itr.width
-        return ((1, j+1), (1, (j+K)%itr.height+1)), (2, j+1, count+1)
-    else
-        return ((i, j), (i, (j+K-1)%itr.height+1)), (i+1, j, count+1)
-    end
-end
-
-#######
-# Even
-#######
-
-function next(itr::SquareBondIter{Periodic, Even{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-
-    if count < itr.width * itr.height + 1
-        return _upper_right(itr, state)
-    elseif count == itr.width * itr.height + 1
-        return _upper_left(itr, (1, 1, count))
-    else
-        return _upper_left(itr, state)
-    end
-end
-
-function _upper_left(itr::SquareBondIter{Periodic, Even{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-    
-    if i > itr.width
-        return ((K%itr.width+1, j+1), (1, (j+K)%itr.height+1)), (2, j+1, count+1)
-    end
-    return (((i+K-1)%itr.width+1, j), (i, (j+K-1)%itr.height+1)), (i+1, j, count+1)
-end
-
-function _upper_right(itr::SquareBondIter{Periodic, Even{K}}, state::NTuple{3, Int}) where K
-    i, j, count = state
-
-    if j > itr.height
-        return ((i+1, 1), ((i+K)%itr.width+1, K%itr.height+1)), (i+1, 2, count+1)
-    end
-    return ((i, j), ((i+K-1)%itr.width+1, (j+K-1)%itr.height+1)), (i, j+1, count+1)
-end

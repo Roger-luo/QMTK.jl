@@ -2,7 +2,7 @@
 # Abstract Types
 #################
 
-export Periodic, Fixed, AbstractLattice, BCLattice
+export AbstractLattice, BCLattice
 export isperiodic
 
 """
@@ -13,38 +13,6 @@ this lattice type.
 """
 abstract type AbstractLattice{N} end
 
-########################
-# Abstract Boundaries
-########################
-
-"""
-    LatticeProperty
-
-Abstract type for lattice properties can be
-determined in compile time.
-"""
-abstract type LatticeProperty end
-
-"""
-    Boundary <: LatticeProperty
-
-Abstract type for boundary conditions.
-"""
-abstract type Boundary <: LatticeProperty end
-
-"""
-    Periodic <: Boundary
-
-Periodic boundary tag.
-"""
-abstract type Periodic <: Boundary end
-
-"""
-    Fixed <: Boundary
-
-Fixed boundary tag.
-"""
-abstract type Fixed <: Boundary end
 
 """
     BCLattice{B, N} <: AbstractLattice{N}

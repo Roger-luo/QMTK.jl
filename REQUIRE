@@ -3,3 +3,4 @@ StaticArrays
 JSON
 Compat
 DataStructures
+IterTools

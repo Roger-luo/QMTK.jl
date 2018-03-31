@@ -14,3 +14,16 @@ for shape in (8, 6, 10)
         @test t == collect(bonds(chain, K))
     end
 end
+
+for shape in (8, 6, 10)
+    chain = Chain(Periodic, shape)
+
+    @test collect(1:shape) == collect(sites(chain))
+
+    for K in (1, 3, 5)
+        t = map(collect(1:shape)) do x
+            x, (x+K-1)%shape+1
+        end
+        @test t == collect(bonds(chain, K))
+    end
+end

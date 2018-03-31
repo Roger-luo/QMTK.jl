@@ -63,6 +63,6 @@ next(itr::ChainBondIter{Fixed, K}, state::Int) where K = ((state, state + K), st
 done(itr::ChainBondIter{Fixed, K}, state::Int) where K = state > (itr.length - K)
 length(itr::ChainBondIter{Fixed, K}) where K = itr.length - K
 
-next(itr::ChainBondIter{Periodic, K}, state::Int) where K = ((state, rem(state+K, itr.length, RoundDown)), state+1)
+next(itr::ChainBondIter{Periodic, K}, state::Int) where K = ((state, (state+K-1)%itr.length+1), state+1)
 done(itr::ChainBondIter{Periodic, K}, state::Int) where K = state > itr.length
 length(itr::ChainBondIter{Periodic, K}) where K = itr.length

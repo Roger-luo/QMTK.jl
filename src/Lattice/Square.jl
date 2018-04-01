@@ -27,17 +27,12 @@ shape(square::Square) = (square.height, square.width)
 length(square::Square) = square.height * square.width
 sites(square::Square) = SquareSiteIter(square)
 
-# TODO: add bounds check, throw LoadError when bond is invalid
-bonds(square::Square, bond::Integer) = SquareBondIter(square, bond)
-
-struct SquareSiteIter <: SiteIterator{Square}
+struct SquareSiteIter{B<:Boundary} <: SiteIterator{Square{B}}
     height::Int
     width::Int
 end
 
-SquareSiteIter(square::Square) = SquareSiteIter(square.height, square.width)
-
-import IterTools
+SquareSiteIter(square::Square{B}) where B = SquareSiteIter{B}(square.height, square.width)
 
 struct SquareBondIter{B<:Boundary, K} <: BondIterator{Square{B}}
     height::Int
@@ -47,16 +42,21 @@ end
 SquareBondIter(square::Square{B}, ::Type{K}) where {B, K} =
     SquareBondIter{B, K}(square.height, square.width)
 
-function SquareBondIter(square::Square{B}, bond::Integer) where B
+lattice(itr::LatticeIterator{Square{B}}) where B =
+    Square(B, itr.height, itr.width)
+
+# TODO: add bounds check, throw LoadError when bond is invalid
+
+function bonds(square::Square, bond::Integer)
     if bond % 2 == 1
         k = Int((bond + 1) / 2)
-        return IterTools.chain(
+        return fuse(
             SquareBondIter(square, Vertical{k}),
             SquareBondIter(square, Horizontal{k})
         )
     else
         k = Int(bond / 2)
-        return IterTools.chain(
+        return fuse(
             SquareBondIter(square, UpRight{k}),
             SquareBondIter(square, UpLeft{k})
         )
@@ -190,3 +190,5 @@ function next(itr::SquareBondIter{Periodic, UpLeft{K}}, state) where K
     end
     return (((i+K-1)%itr.height+1, j), (i, (j+K-1)%itr.width+1)), (i+1, j, count+1)
 end
+
+getid(square::Square, x::Int, y::Int) = x + (y - 1) * square.height

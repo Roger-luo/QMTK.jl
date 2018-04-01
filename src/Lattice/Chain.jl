@@ -28,11 +28,11 @@ length(chain::Chain) = chain.length
 sites(chain::Chain) = ChainSiteIter(chain)
 bonds(chain::Chain, bond::Int) = ChainBondIter(chain, bond)
 
-struct ChainSiteIter <: SiteIterator{Chain}
+struct ChainSiteIter{B<:Boundary} <: SiteIterator{Chain{B}}
     length::Int
 end
 
-ChainSiteIter(chain::Chain) = ChainSiteIter(chain.length)
+ChainSiteIter(chain::Chain{B}) where B = ChainSiteIter{B}(chain.length)
 
 struct ChainBondIter{B<:Boundary, K} <: BondIterator{Chain{B}}
     length::Int
@@ -41,6 +41,7 @@ end
 ChainBondIter(chain::Chain{B}, bond::Int) where {B<:Boundary} =
     ChainBondIter{B, bond}(chain.length)
 
+lattice(itr::LatticeIterator{Chain{B}}) where B = Chain(B, itr.length)
 
 ############
 # Iterators
@@ -66,3 +67,5 @@ length(itr::ChainBondIter{Fixed, K}) where K = itr.length - K
 next(itr::ChainBondIter{Periodic, K}, state::Int) where K = ((state, (state+K-1)%itr.length+1), state+1)
 done(itr::ChainBondIter{Periodic, K}, state::Int) where K = state > itr.length
 length(itr::ChainBondIter{Periodic, K}) where K = itr.length
+
+getid(chain::Chain, pos::Integer) = pos

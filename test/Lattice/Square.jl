@@ -8,7 +8,9 @@ SHAPES = [(3, 4), (3, 3), (4, 5), (1, 5)]
 for shape in SHAPES
     for bound in (Fixed, Periodic)
         square = Square(bound, shape)
-        @test collect(product(1:shape[1], 1:shape[2])) == collect(sites(square))
+        itr = sites(square)
+        @test square == lattice(itr)
+        @test collect(product(1:shape[1], 1:shape[2])) == collect(itr)
     end
 end
 
@@ -19,7 +21,9 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1]-K, 1:shape[2]))) do x
             x, (x[1] + K, x[2])
         end
-        @test t == collect(QMTK.SquareBondIter(square, Vertical{K}))
+        itr = QMTK.SquareBondIter(square, Vertical{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
 end
 
@@ -30,7 +34,9 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1], 1:shape[2]-K))) do x
             x, (x[1], x[2]+K)
         end
-        @test t == collect(QMTK.SquareBondIter(square, Horizontal{K}))
+        itr = QMTK.SquareBondIter(square, Horizontal{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
 end
 
@@ -41,7 +47,9 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1]-K, 1:shape[2]-K))) do x
             x, (x[1]+K, x[2]+K)
         end
-        @test t == collect(QMTK.SquareBondIter(square, UpRight{K}))
+        itr = QMTK.SquareBondIter(square, UpRight{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
 end
 
@@ -52,7 +60,9 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1]-K, 1:shape[2]-K))) do x
             (x[1]+K, x[2]), (x[1], x[2]+K)
         end
-        @test t == collect(QMTK.SquareBondIter(square, UpLeft{K}))
+        itr = QMTK.SquareBondIter(square, UpLeft{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
 end
 
@@ -64,7 +74,9 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1], 1:shape[2]))) do x
             x, ((x[1]+K-1)%shape[1]+1, x[2])
         end
-        @test t == collect(QMTK.SquareBondIter(square, Vertical{K}))
+        itr = QMTK.SquareBondIter(square, Vertical{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
 end
 
@@ -75,7 +87,9 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1], 1:shape[2]))) do x
             x, (x[1], (x[2]+K-1)%shape[2]+1)
         end
-        @test t == collect(QMTK.SquareBondIter(square, Horizontal{K}))
+        itr = QMTK.SquareBondIter(square, Horizontal{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
 end
 
@@ -86,7 +100,10 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1], 1:shape[2]))) do x
             x, ((x[1]+K-1)%shape[1]+1, (x[2]+K-1)%shape[2]+1)
         end
-        @test t == collect(QMTK.SquareBondIter(square, UpRight{K}))
+
+        itr = QMTK.SquareBondIter(square, UpRight{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
 end
 
@@ -97,6 +114,13 @@ for shape in SHAPES
         t = map(collect(product(1:shape[1], 1:shape[2]))) do x
             ((x[1]+K-1)%shape[1]+1, x[2]), (x[1], (x[2]+K-1)%shape[2]+1)
         end
-        @test t == collect(QMTK.SquareBondIter(square, UpLeft{K}))
+        itr = QMTK.SquareBondIter(square, UpLeft{K})
+        @test square == lattice(itr)
+        @test t == collect(itr)
     end
+end
+
+for bound in (Fixed, Periodic)
+    square = Square(bound, (4, 5))
+    @test square == lattice(bonds(square, 1))
 end

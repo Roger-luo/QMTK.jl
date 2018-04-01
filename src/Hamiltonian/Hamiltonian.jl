@@ -14,3 +14,4 @@ function kronsum(f::Function, itr::LatticeIterator)
 end
 
 include("Core.jl")
+include("RegionIter.jl")

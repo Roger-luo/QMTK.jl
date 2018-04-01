@@ -1,3 +1,5 @@
+export AbstractSites, sitetype, data
+
 """
     AbstractSites{Label, T, N} <: AbstractArray{T, N}
 
@@ -8,7 +10,14 @@ abstract type AbstractSites{Label, T, N} <: AbstractArray{T, N} end
 """
 get sitetype from subtypes of `AbstractSites` 
 """
-function sitetype end
+function sitetype(x::AbstractSites) end
+
+"""
+    data(sites)
+
+get data of this `sites`
+"""
+function data(x::AbstractSites) end
 
 import Compat.Random: rand, rand!, GLOBAL_RNG
 export rand!, rand

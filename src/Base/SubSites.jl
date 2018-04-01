@@ -1,3 +1,5 @@
+export SubSites
+
 """
     SubSites{Label, T, Length} <: AbstractSites{Label, T, 1}
 
@@ -18,9 +20,16 @@ SubSites(::Type{L}, data::NTuple{Length, T}) where {L, Length, T} =
 sitetype(::Type{SubSites{Label, T, Length}}) where {Label, T, Length} = Label
 data(s::SubSites) = s.data
 
+import Base: show, showarray
+
+function show(io::IO, x::SubSites{L, T, N}) where {L, T, N}
+    print(io, "SubSites{$L, $T, $N}")
+    print(io, x.data)
+end
+
 # use array interface
 import Base: eltype, length, ndims, size, eachindex, 
-    getindex, setindex!, stride, strides, copy
+    getindex, setindex!, stride, strides, copy, indices
 import Compat: axes
 
 eltype(x::SubSites{L, T, N}) where {L, T, N} = T
@@ -28,12 +37,19 @@ length(x::SubSites{L, T, N}) where {L, T, N} = N
 ndims(x::SubSites{L, T, N}) where {L, T, N} = 1
 size(x::SubSites{L, T, N}) where {L, T, N} = (N, )
 size(x::SubSites{L, T, N}, n::Integer) where {L, T, N} = n == 1? N : 1
-axes(x::SubSites{L, T, N}) where {L, T, N} = (1:N, )
-axes(x::SubSites{L, T, N}, d::Integer) where {L, T, N} = d == 1? 1:N : 1:1
+# axes(x::SubSites{L, T, N}) where {L, T, N} = (1:N, )
+# axes(x::SubSites{L, T, N}, d::Integer) where {L, T, N} = d == 1? 1:N : 1:1
 eachindex(x::SubSites{L, T, N}) where {L, T, N} = eachindex(x.data)
 stride(x::SubSites{L, T, N}, k::Integer) where {L, T, N} = k == 1? 1 : N
 strides(x::SubSites{L, T, N}) where {L, T, N} = (1, )
-getindex(x::SubSites{L, T, N}, index::Integer...) where {L, T, N} = getindex(x.data, index...)
+
+getindex(x::SubSites, index::Integer) = getindex(x.data, index)
+function getindex(x::SubSites, index::Integer...)
+    if all(Base.tail(index) .!= 1)
+        throw(BoundsError(x, index))
+    end
+    getindex(x.data, first(index))
+end
 
 # Iterator Interface
 import Base: start, next, done
@@ -53,13 +69,13 @@ import Base: convert
     return ex
 end
 
-@generated function convert(::Type{Int}, x::SubSites{Bit, T, L}) where {T, L}
+@generated function convert(::Type{D}, x::SubSites{Bit, T, L}) where {D <: Integer, T, L}
     ex = :(x[$L] * 1)
     for i = L-1:-1:1
         factor = 2^(L-i)
         ex = :(x[$i] * $factor + $ex)
     end
-    return ex
+    return :(D($ex))
 end
 
 @generated function convert(::Type{SubSites{Spin, T, L}}, n::Int) where {T, L}
@@ -70,13 +86,13 @@ end
     return ex
 end
 
-@generated function convert(::Type{Int}, x::SubSites{Spin, T, L}) where {T, L}
+@generated function convert(::Type{D}, x::SubSites{Spin, T, L}) where {D <: Integer, T, L}
     ex = :(div(x[$L]+1, 2) * 1)
     for i = L-1:-1:1
         factor = 2^(L-i)
         ex = :(div(x[$i] + 1, 2) * $factor + $ex)
     end
-    return ex
+    return :(D($ex))
 end
 
 @generated function convert(::Type{SubSites{Half, T, L}}, n::Int) where {T, L}
@@ -87,13 +103,13 @@ end
     return ex
 end
 
-@generated function convert(::Type{Int}, x::SubSites{Half, T, L}) where {T, L}
+@generated function convert(::Type{D}, x::SubSites{Half, T, L}) where {D <: Integer, T, L}
     ex = :((x[$L]+0.5) * 1)
     for i = L-1:-1:1
         factor = 2^(L-i)
         ex = :((x[$i]+0.5) * $factor + $ex)
     end
-    return ex
+    return :(D($ex))
 end
 
 function convert(::Type{SubSites{Half, TA, L}}, x::SubSites{Spin, TB, L}) where {TA, TB, L}

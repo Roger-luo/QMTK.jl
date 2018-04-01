@@ -24,18 +24,20 @@ import Base: eltype, length, ndims, size, eachindex,
     getindex, setindex!, stride, strides, copy
 import Compat: axes
 
-eltype(x::Sites{L, T, N}) where {L, T, N} = T
-length(x::Sites{L, T, N}) where {L, T, N} = length(x.data)
-ndims(x::Sites{L, T, N}) where {L, T, N} = ndims(x.data)
-size(x::Sites{L, T, N}) where {L, T, N} = size(x.data)
-size(x::Sites{L, T, N}, n::Integer) where {L, T, N} = size(x.data, n)
-axes(x::Sites{L, T, N}) where {L, T, N} = axes(x.data)
-axes(x::Sites{L, T, N}, d::Integer) where {L, T, N} = axes(x.data, d)
-eachindex(x::Sites{L, T, N}) where {L, T, N} = eachindex(x.data)
-stride(x::Sites{L, T, N}, k::Integer) where {L, T, N} = stride(x.data, k)
-strides(x::Sites{L, T, N}) where {L, T, N} = strides(x.data)
-getindex(x::Sites{L, T, N}, index::Integer...) where {L, T, N} = getindex(x.data, index...)
-setindex!(x::Sites{L, T, N}, val::Tv, index::Integer...) where {Tv, L, T, N} = setindex!(x.data, val, index...)
+eltype(x::Sites{L, T}) where {L, T} = T
+length(x::Sites)  = length(x.data)
+ndims(x::Sites)  = ndims(x.data)
+size(x::Sites)  = size(x.data)
+size(x::Sites, n::Integer)  = size(x.data, n)
+axes(x::Sites)  = axes(x.data)
+axes(x::Sites, d::Integer)  = axes(x.data, d)
+eachindex(x::Sites)  = eachindex(x.data)
+stride(x::Sites, k::Integer)  = stride(x.data, k)
+strides(x::Sites)  = strides(x.data)
+getindex(x::Sites, index::Integer...)  = getindex(x.data, index...)
+getindex(x::Sites, index::NTuple{N, T}) where {N, T <: Integer} = getindex(x.data, index...)
+setindex!(x::Sites, val, index::Integer...) = setindex!(x.data, val, index...)
+setindex!(x::Sites, val, index::NTuple{N, T}) where {N, T <: Integer} = setindex!(x.data, val, index...)
 
 @inline function copy(b::Sites{L, T, N}) where {L, T, N}
     return Sites{L, T, N}(copy(b.data))

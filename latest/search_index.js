@@ -125,7 +125,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Basic Types",
     "title": "QMTK.Bit",
     "category": "type",
-    "text": "Bit <: AbstractBitSite\n\nBinary State, Bit. Has two state: 0, 1\n\n\n\n"
+    "text": "Bit <: BitSiteLabel\n\nBinary State, Bit. Has two state: 0, 1\n\n\n\n"
 },
 
 {
@@ -133,7 +133,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Basic Types",
     "title": "QMTK.Spin",
     "category": "type",
-    "text": "Spin <: AbstractBitSite\n\nBinary State, Spin. Has two state: -1, 1\n\n\n\n"
+    "text": "Spin <: BitSiteLabel\n\nBinary State, Spin. Has two state: -1, 1\n\n\n\n"
 },
 
 {
@@ -141,7 +141,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Basic Types",
     "title": "QMTK.Half",
     "category": "type",
-    "text": "Half <: AbstractBitSite\n\nBinary State, Half. Has two state: -0.5, 0.5\n\n\n\n"
+    "text": "Half <: BitSiteLabel\n\nBinary State, Half. Has two state: -0.5, 0.5\n\n\n\n"
 },
 
 {
@@ -173,7 +173,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Basic Types",
     "title": "QMTK.data",
     "category": "function",
-    "text": "data(basis)\n\nget data of the basis\n\n\n\ndata(space::AbstractSpace{T, S}) -> T\n\nget the current data of this space\n\n\n\n"
+    "text": "data(sites)\n\nget data of this sites\n\n\n\ndata(space::AbstractSpace{T, S}) -> T\n\nget the current data of this space\n\n\n\n"
 },
 
 {
@@ -206,30 +206,6 @@ var documenterSearchIndex = {"docs": [
     "title": "QMTK.AbstractSpace",
     "category": "type",
     "text": "AbstractSpace{T, S}\n\nGeneral abstract type for space with T as its content in state S.\n\nIn fact, an instance of a space should be a type with a temporary memory to store an element of the space in type T.\n\n\n\n"
-},
-
-{
-    "location": "man/basictype/#QMTK.SpaceState",
-    "page": "Basic Types",
-    "title": "QMTK.SpaceState",
-    "category": "type",
-    "text": "state of a sample space: Randomized, Initialized, etc.\n\n\n\n"
-},
-
-{
-    "location": "man/basictype/#QMTK.Randomized",
-    "page": "Basic Types",
-    "title": "QMTK.Randomized",
-    "category": "type",
-    "text": "This sample space is randomized. (current sample is a initialized randomly)\n\n\n\n"
-},
-
-{
-    "location": "man/basictype/#QMTK.Initialized",
-    "page": "Basic Types",
-    "title": "QMTK.Initialized",
-    "category": "type",
-    "text": "This sample space is initialized. (current sample is a certain default one)\n\n\n\n"
 },
 
 {
@@ -513,19 +489,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "man/lattice/#QMTK.LatticeProperty",
-    "page": "Lattice",
-    "title": "QMTK.LatticeProperty",
-    "category": "type",
-    "text": "LatticeProperty\n\nAbstract type for lattice properties can be determined in compile time.\n\n\n\n"
-},
-
-{
     "location": "man/lattice/#QMTK.Boundary",
     "page": "Lattice",
     "title": "QMTK.Boundary",
     "category": "type",
-    "text": "Boundary <: LatticeProperty\n\nAbstract type for boundary conditions.\n\n\n\n"
+    "text": "Boundary <: LatticeTag\n\nAbstract type for boundary conditions.\n\n\n\n"
 },
 
 {
@@ -629,7 +597,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Lattice",
     "title": "QMTK.Square",
     "category": "type",
-    "text": "Square{B} <: BCLattice{B, 2}\n\nGeneral square lattice with boundary condition B.\n\nSquare([Boundary], width, height)\nSquare([Boundary], shape)\n\nConstruct a square lattice\n\n\n\n"
+    "text": "Square{B} <: BCLattice{B, 2}\n\nGeneral square lattice with boundary condition B.\n\nSquare([Boundary], height, width)\nSquare([Boundary], shape)\n\nConstruct a square lattice. The shape follows the order of Julia\'s Native Array.\n\n\n\n"
 },
 
 {
@@ -646,30 +614,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Hamiltonian",
     "category": "page",
     "text": ""
-},
-
-{
-    "location": "man/hamiltonian/#QMTK.Region",
-    "page": "Hamiltonian",
-    "title": "QMTK.Region",
-    "category": "type",
-    "text": "Region{ID} <: AbstractRegion\n\ndenotes the IDth Region.\n\n\n\n"
-},
-
-{
-    "location": "man/hamiltonian/#QMTK.Nearest",
-    "page": "Hamiltonian",
-    "title": "QMTK.Nearest",
-    "category": "type",
-    "text": "shorthand for Region{1}\n\n\n\n"
-},
-
-{
-    "location": "man/hamiltonian/#QMTK.NextNearest",
-    "page": "Hamiltonian",
-    "title": "QMTK.NextNearest",
-    "category": "type",
-    "text": "shorthand for Region{2}\n\n\n\n"
 },
 
 {

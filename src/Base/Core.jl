@@ -20,7 +20,7 @@ get data of this `sites`
 function data(x::AbstractSites) end
 
 import Compat.Random: rand, rand!, GLOBAL_RNG
-export rand!, rand
+export rand!, rand, flip!, randflip!
 
 # TODO: add documents
 function rand! end

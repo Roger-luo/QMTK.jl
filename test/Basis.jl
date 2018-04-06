@@ -5,9 +5,9 @@ using Compat
 @testset "Check Type Property" begin
 
     # check default eltype
-    @test eltype(Bit) == Int8
-    @test eltype(Spin) == Int8
-    @test eltype(Half) == Float16
+    @test eltype(Bit) == Float32
+    @test eltype(Spin) == Float32
+    @test eltype(Half) == Float32
 
     # check up down type
     for each in (Bit, Spin, Half)

@@ -1,4 +1,5 @@
 export SiteLabel, BitSiteLabel, Bit, Spin, Half
+export up, down
 
 ##############
 # Site Label
@@ -64,8 +65,8 @@ Binary State, Bit. Has two state: 0, 1
 abstract type Bit <: BitSiteLabel end
 
 eltype(::Type{Bit}) = Float32
-up(::Type{Bit}) = convert(eltype(Bit), 0.0f0)
-down(::Type{Bit}) = convert(eltype(Bit), 1.0f0)
+up(::Type{Bit}) = convert(eltype(Bit), 1.0f0)
+down(::Type{Bit}) = convert(eltype(Bit), 0.0f0)
 
 """
     Half <: BitSiteLabel

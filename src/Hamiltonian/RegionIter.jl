@@ -34,7 +34,12 @@ RegionIterator(
     rhs::AbstractSites
 ) where {B, K} = RegionIterator(h, bonds(lattice, K), rhs)
 
-mutable struct RegionIterState{LST, Lv, HIT, HST}
+mutable struct RegionIterState{
+        LST, Lv,
+        HIT <: AbstractHamiltonianIterator,
+        HST
+    }
+    
     lattice_st::LST # Lattice State
     lattice_va::Lv # Lattice Value
     hamilton_it::HIT # Hamilton Iter
@@ -42,7 +47,7 @@ mutable struct RegionIterState{LST, Lv, HIT, HST}
 end
 
 function RegionIterState(itr::RegionIterator{Region{0}})
-    lattice_st = start(itr.lattice)
+    lattice_st = start(itr.lattice_it)
     i, lattice_st = next(itr.lattice_it, lattice_st)
     hamilton_it = LHIterator(itr.hamilton, itr.RHS[i])
     hamilton_st = start(hamilton_it)
@@ -50,13 +55,16 @@ function RegionIterState(itr::RegionIterator{Region{0}})
 end
 
 function RegionIterState(itr::RegionIterator{Region{K}}) where K
-    lattice_st = start(itr.lattice)
+    lattice_st = start(itr.lattice_it)
     (i, j), lattice_st = next(itr.lattice_it, lattice_st)
-    hamilton_it = start(LHIterator(itr.hamilton, itr.RHS[i], itr.RHS[j]))
+    hamilton_it = LHIterator(itr.hamilton, itr.RHS[i], itr.RHS[j])
     hamilton_st = start(hamilton_it)
     return RegionIterState(lattice_st, (i, j), hamilton_it, hamilton_st)
 end
 
+import Base: start, next, done
+
+# eltype(itr::RegionIterator) = Tuple{}
 start(itr::RegionIterator) = RegionIterState(itr)
 
 function next(itr::RegionIterator{Region{K}}, state) where K
@@ -68,7 +76,7 @@ function next(itr::RegionIterator{Region{K}}, state) where K
 end
 
 function done(itr::RegionIterator{Region{K}}, state) where K
-    if done(itr.hamilton, state.hamilton)
+    if done(state.hamilton_it, state.hamilton_st)
         if done(itr.lattice_it, state.lattice_st)
             return true
         end
@@ -78,6 +86,7 @@ function done(itr::RegionIterator{Region{K}}, state) where K
         state.hamilton_st = start(state.hamilton_it)
         state.lattice_va = (i, j)
     end
+    return false
 end
 
 function next(itr::RegionIterator{Region{0}}, state)
@@ -88,7 +97,7 @@ function next(itr::RegionIterator{Region{0}}, state)
 end
 
 function done(itr::RegionIterator{Region{0}}, state)
-    if done(itr.hamilton, state.hamilton)
+    if done(state.hamilton_it, state.hamilton_st)
         if done(itr.lattice_it, state.lattice)
             return true
         end

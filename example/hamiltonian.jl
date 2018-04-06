@@ -72,12 +72,12 @@ h = @ham sum(:nearest, S * S) + sum(:nextnearest, S * S)
 
 # lh1 = LocalHamiltonian(Region{1}, kron(sigmax, sigmax))
 # lh2 = LocalHamiltonian(Region{2}, kron(sigmax, sigmax))
-chain = Chain{Fixed}(4)
-lhs = rand(Bit, 4)
+chain = Chain(Fixed, 4)
+rhs = rand(Bit, 4)
 
 # h = Hamiltonian(lh1, lh2)
 
-for (val, rhs) in h(chain, lhs)
+for (val, lhs) in h(chain, rhs)
     i = convert(Int, lhs) + 1
     println(val, ", ", rhs)
 end

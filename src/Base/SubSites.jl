@@ -52,11 +52,11 @@ function getindex(x::SubSites, index::Integer...)
 end
 
 # Iterator Interface
-import Base: start, next, done
+import Base: start, next, done, eltype, length
 
 start(x::SubSites) = start(x.data)
-next(x::SubSites, state) = next(x, state)
-done(x::SubSites, state) = done(x, state)
+next(x::SubSites, state) = next(x.data, state)
+done(x::SubSites, state) = done(x.data, state)
 
 # Conversion
 import Base: convert

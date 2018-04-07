@@ -8,8 +8,6 @@ end
     include("RegionIter.jl")
 end
 
-# @testset "kron macros" begin
-#     include("KronMacro.jl")
-# end
-
-
+@testset "kron macros" begin
+    include("KronMacro.jl")
+end

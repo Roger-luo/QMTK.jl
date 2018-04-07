@@ -5,8 +5,6 @@ using Compat.Test
 @testset "local hamiltonian" begin
 
     mat = σ₁⊗σ₂
-    display(mat)
-    println()
     h = LocalHamiltonian(mat)
     rhs = SubSites(Bit, 1, 0)
     rhs_idx = Int(rhs) + 1

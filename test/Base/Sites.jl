@@ -79,22 +79,3 @@ end
     end
 
 end
-
-@testset "Check SubSite Conversions" begin
-    @test convert(Int, SubSites(Bit, 0, 0)) == 0
-    @test convert(Int, SubSites(Spin, -1, -1)) == 0
-    @test convert(Int, SubSites(Half, -0.5, -0.5)) == 0
-
-    @test convert(Int, SubSites(Bit, 1, 0)) == 2
-    @test convert(Int, SubSites(Spin, 1, -1)) == 2
-    @test convert(Int, SubSites(Half, 0.5, -0.5)) == 2
-
-    @test convert(SubSites{Bit, eltype(Bit), 2}, 0) == SubSites(Bit, 0, 0)
-    @test convert(SubSites{Bit, eltype(Bit), 2}, 2) == SubSites(Bit, 1, 0)
-
-    @test convert(SubSites{Spin, eltype(Spin), 2}, 0) == SubSites(Spin, -1, -1)
-    @test convert(SubSites{Spin, eltype(Spin), 2}, 2) == SubSites(Spin,  1, -1)
-
-    @test convert(SubSites{Half, eltype(Half), 2}, 0) == SubSites(Half, -0.5, -0.5)
-    @test convert(SubSites{Half, eltype(Half), 2}, 2) == SubSites(Half,  0.5, -0.5)
-end

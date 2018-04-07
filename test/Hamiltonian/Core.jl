@@ -20,13 +20,14 @@ t = kronsum(bonds(chain, 1)) do i, j
     :(σ₁[$i] ⊗ σ₂[$j])
 end
 
-rhs = Sites(Bit, [1, 1, 1, 1])
+rhs = Sites(Bit, [1, 1, 0, 1])
 display(t[:, convert(Int, rhs) + 1])
-# [0 1 0 0]
-# []
 
-# h = LocalHamiltonian(Region{1}, σ₁ ⊗ σ₂)
-# itr = RegionIterator(h, chain, rhs)
+convert(SubSites{Bit, Int, 4}, 2)
+
+println()
+h = LocalHamiltonian(Region{1}, σ₁ ⊗ σ₂)
+itr = RegionIterator(h, chain, rhs)
 
 # state = start(itr)
 # (val, (Si, Sj)), state.hamilton_st = next(state.hamilton_it, state.hamilton_st)
@@ -34,7 +35,8 @@ display(t[:, convert(Int, rhs) + 1])
 # val, state = next(itr, state)
 # done(itr, state)
 
-# for (val, lhs) in RegionIterator(h, chain, rhs)
-#     @show val
-#     @show lhs
-# end
+for (val, lhs) in RegionIterator(h, chain, rhs)
+    println(lhs)
+    lhs = convert(Int, lhs) + 1
+    @show val, lhs
+end

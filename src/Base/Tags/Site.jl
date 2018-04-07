@@ -21,7 +21,7 @@ abstract type BitSiteLabel <: SiteLabel end
 
 #################################################################
 # Interfaces
-import Base: eltype
+import Base: eltype, is
 
 """
     eltype(BitSiteLabel)
@@ -43,6 +43,16 @@ function up(::Type{T}) where {T <: BitSiteLabel} end
 down tag for this label. e.g. `0` for `Bit`, `-0.5` for `Half`.
 """
 function down(::Type{T}) where {T <: BitSiteLabel} end
+
+"""
+    is(x, BitSiteLabel) -> Bool
+
+check if x is of given BitSiteLabel
+"""
+is(::Type{T}, x::Number) where {T <: BitSiteLabel} =
+    x == up(T) ? true : x == down(T) ? true : false
+is(::Type{T}, x::NTuple{N, D}) where {T <: BitSiteLabel, D <: Number, N} =
+    all(is(T, each) for each in x)
 
 ##################################################################
 

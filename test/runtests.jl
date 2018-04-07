@@ -1,7 +1,7 @@
 using QMTK
 using Compat.Test
 
-include("Basis.jl")
+include("Base/Base.jl")
 include("Lattice/Lattice.jl")
 include("Samplers.jl")
 include("Space.jl")

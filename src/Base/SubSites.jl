@@ -15,12 +15,16 @@ end
 
 SubSites(::Type{L}, data::T...) where {L, T} = SubSites(L, data)
 SubSites(::Type{L}, data::NTuple{Length, T}) where {L, Length, T} = 
-    SubSites{L, eltype(L), Length}(data)
+    SubSites{L, T, Length}(data)
+SubSites(::Type{L}, ::Type{DT}, data::T...) where {L, DT, T} =
+    SubSites(L, DT, data)
+SubSites(::Type{L}, ::Type{DT}, data::NTuple{Length, T}) where {L, DT, Length, T} =
+    SubSites{L, DT, Length}(data)
 
 sitetype(::Type{SubSites{Label, T, Length}}) where {Label, T, Length} = Label
 data(s::SubSites) = s.data
 
-import Base: show, showarray
+import Base: show
 
 function show(io::IO, x::SubSites{L, T, N}) where {L, T, N}
     print(io, "SubSites{$L, $T, $N}")
@@ -63,16 +67,16 @@ import Base: convert
 
 @generated function convert(::Type{SubSites{Bit, T, L}}, n::Int) where {T, L}
     ex = Expr(:call, :SubSites, :Bit)
-    for i = L-1:-1:0
+    for i = 0:L-1
         push!(ex.args, :($T((n>>$i) & 0x01)))
     end
     return ex
 end
 
 @generated function convert(::Type{D}, x::SubSites{Bit, T, L}) where {D <: Integer, T, L}
-    ex = :(x[$L] * 1)
-    for i = L-1:-1:1
-        factor = 2^(L-i)
+    ex = :(x[1] * 1)
+    for i = 2:L
+        factor = 2^(i-1)
         ex = :(x[$i] * $factor + $ex)
     end
     return :(D($ex))
@@ -80,16 +84,16 @@ end
 
 @generated function convert(::Type{SubSites{Spin, T, L}}, n::Int) where {T, L}
     ex = Expr(:call, :SubSites, :Spin)
-    for i = L-1:-1:0
+    for i = 0:L-1
         push!(ex.args, :($T(2 * ((n>>$i) & 1) - 1)))
     end
     return ex
 end
 
 @generated function convert(::Type{D}, x::SubSites{Spin, T, L}) where {D <: Integer, T, L}
-    ex = :(div(x[$L]+1, 2) * 1)
-    for i = L-1:-1:1
-        factor = 2^(L-i)
+    ex = :(div(x[1]+1, 2) * 1)
+    for i = 2:L
+        factor = 2^(i-1)
         ex = :(div(x[$i] + 1, 2) * $factor + $ex)
     end
     return :(D($ex))
@@ -97,16 +101,16 @@ end
 
 @generated function convert(::Type{SubSites{Half, T, L}}, n::Int) where {T, L}
     ex = Expr(:call, :SubSites, :Half)
-    for i = L-1:-1:0
+    for i = 0:L-1
         push!(ex.args, :($T(((n>>$i) & 1) - 0.5)))
     end
     return ex
 end
 
 @generated function convert(::Type{D}, x::SubSites{Half, T, L}) where {D <: Integer, T, L}
-    ex = :((x[$L]+0.5) * 1)
-    for i = L-1:-1:1
-        factor = 2^(L-i)
+    ex = :((x[1]+0.5) * 1)
+    for i = 2:L
+        factor = 2^(i-1)
         ex = :((x[$i]+0.5) * $factor + $ex)
     end
     return :(D($ex))

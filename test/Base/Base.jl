@@ -12,3 +12,7 @@ end
 @testset "Tags" begin
     include("Tag/Tags.jl")
 end
+
+@testset "Ket" begin
+    include("Ket.jl")
+end

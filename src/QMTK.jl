@@ -16,7 +16,7 @@ const __version__ = v"0.1.0"
 
 # orthogonal part
 include("Consts/Consts.jl")
-include("Utils.jl")
+# include("Utils.jl")
 include("Base/Base.jl")
 
 # Depends on Base.jl
@@ -28,5 +28,8 @@ include("Hamiltonian/Hamiltonian.jl")
 
 # Model
 include("Model/Model.jl")
+
+# Kronnecker Sugar
+include("Kron.jl")
 
 end # module

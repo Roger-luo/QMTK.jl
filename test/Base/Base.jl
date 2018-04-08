@@ -8,3 +8,7 @@ end
 @testset "SubSites" begin
     include("SubSites.jl")
 end
+
+@testset "Tags" begin
+    include("Tag/Tags.jl")
+end

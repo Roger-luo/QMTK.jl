@@ -59,3 +59,10 @@ end
     # TODO: Test distribution after binning is implemented
     # @test shake!(space)
 end
+
+@testset "Iterator" begin
+
+    space = RealSpace(min=1, max=2.1)
+    @test collect(1:0.2:2.1) == collect(traverse(space, step=0.2))
+
+end

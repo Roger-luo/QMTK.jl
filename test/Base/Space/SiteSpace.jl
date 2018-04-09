@@ -30,4 +30,10 @@ end
     space = randomize!(space)
     sample = shake!(space)
     @test sample === space.data
+
+    itr = traverse(space)
+    for (i, each) in zip(0 : (1 << length(itr)) - 1, itr)
+        @test Int(each) == i
+    end
+
 end

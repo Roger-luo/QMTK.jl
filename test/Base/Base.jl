@@ -16,3 +16,7 @@ end
 @testset "Ket" begin
     include("Ket.jl")
 end
+
+@testset "Space" begin
+    include("Space/Space.jl")
+end

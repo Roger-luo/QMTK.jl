@@ -1,5 +1,5 @@
 using QMTK
-import QMTK: RealSpaceType
+import QMTK: RealSpaceType, UnRandomizedError
 using Compat.Test
 
 @test Float64 <: RealSpaceType{Float64}
@@ -29,15 +29,33 @@ space = RealSpace(Float32, 2, 2, min=-1, max=1)
 
 end
 
-@testset "initialize" begin
+@testset "methods" begin
 
     space = RealSpace()
     space = reset!(space)
     @test space.data == space.min
     @test israndomized(space) == false
 
+    data = acquire(space)
+    @test space.data === data
+
+    @test_throws UnRandomizedError shake!(space)
+    space = randomize!(space)
+    @test israndomized(space) == true
+
+
     space = RealSpace(2, 2)
     space = reset!(space)
     @test all(space.data .== space.min)
     @test israndomized(space) == false
+
+    data = acquire(space)
+    @test space.data !== data
+
+    @test_throws UnRandomizedError shake!(space)
+    space = randomize!(space)
+    @test israndomized(space) == true
+
+    # TODO: Test distribution after binning is implemented
+    # @test shake!(space)
 end

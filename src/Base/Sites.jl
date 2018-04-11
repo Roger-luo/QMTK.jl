@@ -120,7 +120,7 @@ end
 # TODO: whether this should have side effect?
 # will side effect affects performance (extra instance)?
 import Base: <<
-function <<(a::Sites{Bit}, b::Int)
+function <<(a::Sites, b::Int)
     for i = 1:b
         carrybit!(a)
     end

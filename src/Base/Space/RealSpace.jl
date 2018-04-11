@@ -59,9 +59,9 @@ copy(space::RealSpace{T, D, S}) where {T, D <: AbstractArray, S} =
 acquire(space::RealSpace{T, D, S}) where {T, D <: Real, S} = space.data
 acquire(space::RealSpace{T, D, S}) where {T, D <: AbstractArray, S} = copy(space.data)
 
-traverse(space::RealSpace, step::Real=1e-2) = RealTraverser(space, step)
+traverse(space::RealSpace; step::Real=1e-2) = RealTraverser(space, step)
 
-import Base: start, next, done
+import Base: start, next, done, length, eltype
 
 struct RealTraverser{T, D}
     data::RealSpace{T, D}
@@ -69,9 +69,12 @@ struct RealTraverser{T, D}
 end
 
 # TODO: traverse array field
-start(itr::RealTraverser{T, D}) where {T, D <: Real} = 1
-next(itr::RealTraverser{T, D}, state) where {T, D <: Real} = (itr.data.min + state * step, state + 1)
-done(itr::RealTraverser{T, D}, state) where {T, D <: Real} = itr.data.min + state * step > itr.data.max
+length(itr::RealTraverser) = floor(Int, (itr.data.max - itr.data.min) / itr.step) + 1
+eltype(itr::RealTraverser{T, D}) where {T, D <: Real} = D
+
+start(itr::RealTraverser{T, D}) where {T, D <: Real} = 0
+next(itr::RealTraverser{T, D}, state) where {T, D <: Real} = (itr.data.min + state * itr.step, state + 1)
+done(itr::RealTraverser{T, D}, state) where {T, D <: Real} = itr.data.min + state * itr.step > itr.data.max
 
 # Properties
 data(space::RealSpace) = space.data

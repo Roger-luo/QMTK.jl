@@ -18,8 +18,7 @@ function kronprod(itr)
     return pd
 end
 
-kronprod(m::SparseMatrixCSC...) = kronprod(m)
-kronprod(m::Matrix...) = kronprod([sparse(each) for each in m])
+kronprod(m::AbstractMatrix...) = kronprod(m)
 
 #########
 # @kron

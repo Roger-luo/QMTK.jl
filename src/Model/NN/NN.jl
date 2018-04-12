@@ -1,4 +1,4 @@
-export nn
+export NN
 
 """
 # a tiny coarse-grained neural network framework
@@ -27,7 +27,7 @@ the content stored for backward may change.
 backward method will calculate gradient, it will store parameter gradient into
 the operator and return the gradient of input.
 """
-module nn
+module NN
 
 import QMTK: forward, backward
 using Compat, StaticArrays, QMTK

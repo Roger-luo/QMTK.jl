@@ -14,4 +14,5 @@ function backward end
 include("Utils.jl")
 
 include("Device.jl")
-include("nn/nn.jl")
+include("NN/NN.jl")
+include("TN/TN.jl")

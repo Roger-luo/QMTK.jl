@@ -82,7 +82,7 @@ function backward(op::Arg{T, O}, grad::O) where {T <: Complex, O}
 end
 
 function backward(op::Sign{T, O}, grad::O) where {T <: Real, O}
-    error("you cannot use Sign for real gradient")
+    throw(ErrorException("you cannot use Sign for real gradient"))
 end
 
 function backward(op::Sign{T, O}, grad::O) where {T <: Complex, O}

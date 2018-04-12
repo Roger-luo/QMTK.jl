@@ -3,6 +3,9 @@
 export Sigmoid
 
 """
+    Sigmoid{T, OutputType}
+
+Sigmoid activation.
 """
 mutable struct Sigmoid{T, O} <: AbstractBlock
     output::O

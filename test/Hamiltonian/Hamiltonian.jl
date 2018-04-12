@@ -11,3 +11,7 @@ end
 @testset "kron macros" begin
     include("KronMacro.jl")
 end
+
+@testset "Fused Hamiltonian" begin
+    include("FusedHamiltonian.jl")
+end

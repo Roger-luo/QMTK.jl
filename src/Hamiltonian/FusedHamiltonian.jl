@@ -1,4 +1,4 @@
-export @ham
+export @ham, FusedHamiltonian
 
 import IterTools
 
@@ -73,5 +73,5 @@ function make_hamiltonian(ex::Expr)
 end
 
 macro ham(expr::Expr)
-    make_hamiltonian(expr)
+    esc(make_hamiltonian(expr))
 end

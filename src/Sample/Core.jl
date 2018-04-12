@@ -101,6 +101,7 @@ function show(io::IO, plan::SamplePlan{S, D}) where {S<:AbstractSampler, D<:Abst
 end
 
 ### sugars
+export @sample
 
 """
     sample(expr)

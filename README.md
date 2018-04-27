@@ -6,7 +6,7 @@
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://Roger-luo.github.io/QMTK.jl/stable)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://Roger-luo.github.io/QMTK.jl/latest)
 
-Quantum Many-body Toolkit.
+Quantum Many-body Toolkit. This repo is deprecated, QMTK is seperated to several packages, see our new org: [QuanutmBFS](https://github.com/QuantumBFS)
 
 A general purpose toolkit for quantum many-body system in Julia language.
 
